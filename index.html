@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Tutorial maestro de diseño de carteles profesionales con inteligencia artificial. Metodología Anti-Cliché de Rubén Sbarsky.">
+<title>Tutorial · Carteles Profesionales con IA — Método Anti-Cliché</title>
+<style>
+/* ============ BASE ============ */
+*{box-sizing:border-box}
+:root{
+  --bg:#0a0e1a; --card:#0f172a; --line:#1e3a5f; --txt:#e2e8f0; --muted:#94a3b8; --acc:#38bdf8;
+  --navbg:rgba(10,14,26,.95); --code:#060a12; --codefg:#cfe6ff; --fs:1; --drbg:#0f172a; --drline:#1e3a5f;
+}
+html.light{
+  --bg:#eef2f7; --card:#ffffff; --line:#cbd5e1; --txt:#0f172a; --muted:#475569; --acc:#0369a1;
+  --navbg:rgba(238,242,247,.96); --code:#0f172a; --codefg:#e2e8f0; --drbg:#ffffff; --drline:#cbd5e1;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:calc(1rem * var(--fs));line-height:1.65;-webkit-text-size-adjust:100%;
+  transition:background .3s,color .3s;
+}
+h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em}
+h1{font-size:1.85em;letter-spacing:-.02em}
+h2{font-size:1.42em;letter-spacing:-.01em}
+h3{font-size:1.14em}
+h4{font-size:1em}
+p{margin:0 0 .9em}
+a{color:var(--acc)}
+ul,ol{margin:0 0 1em;padding-left:1.35em}
+li{margin:.35em 0}
+strong{color:var(--txt)}
+code{background:rgba(56,189,248,.12);color:var(--acc);padding:.1em .4em;border-radius:5px;font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+hr{border:0;border-top:1px solid var(--line);margin:26px 0}
+
+/* ============ NAV ============ */
+#nav{
+  position:fixed;top:0;left:0;right:0;height:58px;display:flex;align-items:center;gap:8px;
+  padding:0 10px;background:var(--navbg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);z-index:40;
+}
+#nav .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex:1;padding:8px 0}
+#nav .chips::-webkit-scrollbar{display:none}
+.chip{
+  flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
+  min-height:42px;padding:0 14px;border-radius:999px;border:1px solid var(--line);
+  background:transparent;color:var(--muted);font:inherit;font-size:.82rem;font-weight:700;
+  letter-spacing:.02em;cursor:pointer;white-space:nowrap;transition:.2s;-webkit-tap-highlight-color:transparent;
+}
+.chip:hover{color:var(--txt);border-color:var(--acc)}
+.chip:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.chip.on{background:rgba(56,189,248,.15);border-color:var(--acc);color:var(--acc)}
+#mb{font-size:.85rem}
+#prog{position:absolute;bottom:-1px;left:0;height:2px;width:0;background:linear-gradient(90deg,#38bdf8,#a855f7);z-index:2;transition:width .1s linear}
+
+/* ============ DRAWER ============ */
+#dr{
+  position:fixed;top:58px;left:0;bottom:0;width:min(330px,88vw);background:var(--drbg);
+  border-right:1px solid var(--drline);transform:translateX(-105%);transition:transform .25s ease;
+  z-index:36;overflow:auto;padding:10px;display:flex;flex-direction:column;gap:8px;
+  -webkit-overflow-scrolling:touch;
+}
+#dr.o{transform:none}
+#dr a{
+  display:block;padding:12px;border-radius:8px;color:var(--txt);cursor:pointer;
+  min-height:44px;text-decoration:none;font-size:.92rem;line-height:1.35;
+  display:flex;align-items:center;transition:background .18s,color .18s;
+}
+#dr a:hover{background:rgba(255,255,255,.05)}
+#dr a.on{background:rgba(0,212,255,.13);color:var(--acc);font-weight:700}
+#dr a:focus-visible{outline:2px solid var(--acc);outline-offset:-2px}
+#drb{
+  position:fixed;top:58px;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:34;
+}
+#drb.o{opacity:1;pointer-events:auto}
+.drhead{position:sticky;top:-10px;background:var(--drbg);padding:6px 0 8px;z-index:2}
+#q{
+  width:100%;min-height:44px;padding:10px 12px;border-radius:10px;border:1px solid var(--drline);
+  background:rgba(127,127,127,.08);color:var(--txt);font:inherit;font-size:.9rem;
+}
+#q:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.qres-list{margin-top:6px;max-height:42vh;overflow:auto}
+.qres-list a{display:block;padding:10px 12px;border-radius:8px;color:var(--txt);cursor:pointer;font-size:.88rem;min-height:44px;display:flex;align-items:center}
+.qres-list a:hover{background:rgba(56,189,248,.12);color:var(--acc)}
+.drctl{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:6px;border-bottom:1px solid var(--drline);margin-bottom:4px}
+.mini{
+  flex:1 1 0;min-width:52px;min-height:44px;border-radius:10px;border:1px solid var(--drline);
+  background:transparent;color:var(--txt);font:inherit;font-size:.85rem;font-weight:700;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;transition:.18s;
+}
+.mini:hover{background:rgba(56,189,248,.12);border-color:var(--acc);color:var(--acc)}
+.mini:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+
+/* ============ LAYOUT ============ */
+main{padding:76px 14px 100px;max-width:980px;margin:0 auto}
+.page{display:none}
+.page.on{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.card h3:first-child,.card h2:first-child{margin-top:0}
+.lead{font-size:1.06em;color:var(--muted)}
+.small{font-size:.85em;color:var(--muted)}
+.tag{display:inline-block;padding:3px 10px;border-radius:999px;background:rgba(56,189,248,.14);color:var(--acc);font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.grid{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:700px){.grid.g2{grid-template-columns:1fr 1fr}.grid.g3{grid-template-columns:repeat(3,1fr)}}
+
+.notice{border-left:3px solid var(--acc);background:rgba(56,189,248,.07);padding:12px 14px;border-radius:0 10px 10px 0;margin:14px 0}
+.notice.warn{border-left-color:#f59e0b;background:rgba(245,158,11,.08)}
+.notice.ok{border-left-color:#22c55e;background:rgba(34,197,94,.08)}
+
+/* ============ TABLES ============ */
+.tw{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:12px;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:.9em;min-width:540px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:rgba(56,189,248,.1);color:var(--acc);font-weight:800;font-size:.95em;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:rgba(56,189,248,.04)}
+
+/* ============ CODE / COPY ============ */
+.cbox{position:relative;margin:14px 0}
+pre{
+  background:var(--code);color:var(--codefg);border:1px solid var(--line);border-radius:12px;
+  padding:40px 14px 14px;overflow-x:auto;font-size:.82em;line-height:1.6;margin:0;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  white-space:pre-wrap;word-break:break-word;
+}
+.copy{
+  position:absolute;top:8px;right:8px;min-height:28px;padding:0 12px;border-radius:999px;
+  border:1px solid var(--line);background:rgba(56,189,248,.14);color:var(--acc);
+  font:inherit;font-size:.68rem;font-weight:800;letter-spacing:.08em;cursor:pointer;transition:.2s;z-index:2;
+}
+.copy:hover{background:rgba(56,189,248,.28)}
+.copy:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.copy.done{background:rgba(34,197,94,.25);color:#4ade80;border-color:#22c55e}
+
+/* ============ BUTTONS ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;
+  padding:0 18px;border-radius:12px;border:1px solid var(--acc);background:rgba(56,189,248,.14);
+  color:var(--acc);font:inherit;font-size:.92rem;font-weight:800;cursor:pointer;transition:.2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn:hover{background:rgba(56,189,248,.26)}
+.btn:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.btn.ghost{border-color:var(--line);background:transparent;color:var(--txt)}
+.btn.ghost:hover{border-color:var(--acc);color:var(--acc)}
+
+/* ============ CHECKLIST ============ */
+.chk{display:flex;align-items:flex-start;gap:10px;min-height:44px;padding:9px 10px;border-radius:10px;cursor:pointer;transition:background .18s}
+.chk:hover{background:rgba(56,189,248,.07)}
+.chk input{width:20px;height:20px;margin:2px 0 0;accent-color:#38bdf8;flex:0 0 auto;cursor:pointer}
+.chk span{flex:1}
+.chk input:checked + span{text-decoration:line-through;color:var(--muted)}
+
+/* ============ DETAILS ============ */
+details{border:1px solid var(--line);border-radius:12px;background:var(--card);margin:10px 0;overflow:hidden}
+details summary{padding:14px 16px;cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center;gap:10px;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸";color:var(--acc);font-size:1.1em;transition:transform .2s;flex:0 0 auto}
+details[open] summary::before{transform:rotate(90deg)}
+details summary:focus-visible{outline:2px solid var(--acc);outline-offset:-2px}
+details .dbody{padding:0 16px 14px;border-top:1px solid var(--line);padding-top:12px}
+
+/* ============ HERO ============ */
+.hero{width:100%;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#070b14;margin-bottom:20px;line-height:0}
+.hero svg{display:block;width:100%;height:auto}
+
+/* ============ MISC ============ */
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}
+.meta span{font-size:.76rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:rgba(56,189,248,.1);color:var(--acc);border:1px solid var(--line)}
+#top{
+  position:fixed;right:14px;bottom:16px;width:48px;height:48px;border-radius:50%;
+  border:1px solid var(--line);background:var(--card);color:var(--acc);font-size:1.1rem;
+  cursor:pointer;z-index:33;display:none;align-items:center;justify-content:center;
+  box-shadow:0 6px 20px rgba(0,0,0,.35);transition:.2s;
+}
+#top.show{display:flex}
+#top:hover{background:rgba(56,189,248,.16)}
+#top:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.author{font-size:2.1em;font-weight:900;letter-spacing:-.02em;background:linear-gradient(90deg,#38bdf8,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent;margin:.2em 0 .1em;line-height:1.1}
+.q{font-weight:800;color:var(--acc);margin:0 0 .35em}
+.qa-block{border-bottom:1px solid var(--line);padding:14px 0}
+.qa-block:last-child{border-bottom:0}
+.qa-block p:last-child{margin-bottom:0}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;border-radius:8px;background:rgba(56,189,248,.15);color:var(--acc);font-size:.8rem;font-weight:900;margin-right:8px}
+
+/* ============ PRINT ============ */
+@media print{
+  @page{size:A4 portrait;margin:14mm 12mm}
+  html,body{background:#fff !important;color:#000 !important;font-size:11pt !important}
+  #nav,#dr,#drb,#top,.copy,.no-print,#prog{display:none !important}
+  main{padding:0 !important;max-width:none !important}
+  .page{display:block !important;page-break-before:auto;margin-bottom:18px}
+  .page + .page{page-break-before:always}
+  .card{border:1px solid #999 !important;background:#fff !important;box-shadow:none !important;break-inside:avoid}
+  .notice{background:#f4f4f4 !important;border-left:3px solid #333 !important}
+  h1,h2,h3,h4{color:#000 !important;break-after:avoid}
+  .tag,.meta span{background:#eee !important;color:#000 !important;border:1px solid #999 !important}
+  pre{background:#f6f6f6 !important;color:#000 !important;border:1px solid #999 !important;white-space:pre-wrap !important;word-break:break-word !important}
+  code{background:#eee !important;color:#000 !important}
+  .tw{overflow:visible !important;border:1px solid #999 !important}
+  table{min-width:0 !important;font-size:9.5pt !important}
+  th{background:#e8e8e8 !important;color:#000 !important}
+  details{border:1px solid #999 !important;background:#fff !important}
+  details .dbody{display:block !important}
+  a{color:#000 !important;text-decoration:underline}
+  .hero{border:1px solid #999 !important;background:#fff !important;break-inside:avoid}
+  .author{color:#000 !important;-webkit-text-fill-color:#000 !important}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav" aria-label="Navegación principal">
+  <button class="chip" id="mb" aria-label="Abrir índice" aria-expanded="false" aria-controls="dr">☰ Índice</button>
+  <div class="chips" id="chips">
+    <button class="chip" data-tab="inicio">INICIO</button>
+    <button class="chip" data-tab="conceptos">CONCEPTOS</button>
+    <button class="chip" data-tab="procedimiento">PROCEDIMIENTO</button>
+    <button class="chip" data-tab="practica">PRÁCTICA</button>
+    <button class="chip" data-tab="qa">33 Preguntas (Q&amp;A)</button>
+    <button class="chip" data-tab="errores">ERRORES</button>
+    <button class="chip" data-tab="resumen">RESUMEN</button>
+    <button class="chip" data-tab="skill">SKILL.md</button>
+    <button class="chip" data-tab="prompts">PROMPTS</button>
+    <button class="chip" data-tab="fuentes">FUENTES</button>
+    <button class="chip" data-tab="creditos">CRÉDITOS</button>
+  </div>
+  <div id="prog" aria-hidden="true"></div>
+</nav>
+
+<div id="dr" role="dialog" aria-modal="false" aria-label="Índice del tutorial">
+  <div class="drhead">
+    <input id="q" type="search" placeholder="Buscar en el tutorial…" aria-label="Buscar en el tutorial" autocomplete="off">
+    <div id="qr" class="qres-list" hidden></div>
+  </div>
+  <div class="drctl">
+    <button class="mini" id="fsm" aria-label="Reducir el tamaño de la letra" title="Reducir letra">A−</button>
+    <button class="mini" id="fsp" aria-label="Aumentar el tamaño de la letra" title="Aumentar letra">A+</button>
+    <button class="mini" id="thm" aria-label="Cambiar entre tema oscuro y claro" title="Tema">🌙</button>
+    <button class="mini" id="prt" aria-label="Imprimir o guardar como PDF" title="Imprimir / PDF">🖨</button>
+  </div>
+  <div id="drl"></div>
+</div>
+<div id="drb" aria-hidden="true"></div>
+
+<button id="top" aria-label="Volver arriba" title="Volver arriba">↑</button>
+
+<main>
+
+<!-- ==================== INICIO ==================== -->
+<section class="page on" id="inicio" data-t="INICIO">
+  <div class="hero" id="heroInicio" role="img" aria-label="Ilustración animada: mesa de dirección de arte donde se compone un cartel profesional mientras un escudo bloquea los clichés de la IA."></div>
+
+  <h1>Diseño de carteles profesionales con Inteligencia Artificial</h1>
+  <p class="lead">Tutorial maestro de la <strong>metodología Anti-Cliché</strong> de Rubén Sbarsky. Aprende a dejar de producir imágenes ordinarias y a dirigir a la IA como lo haría un Director de Arte Senior.</p>
+
+  <div class="meta">
+    <span>Nivel: principiante</span>
+    <span>Sin código</span>
+    <span>Gemini · ChatGPT</span>
+    <span>11 secciones</span>
+  </div>
+
+  <p>
+    <button class="btn ghost" id="ix" aria-label="Abrir el índice del tutorial">☰ Ver índice</button>
+  </p>
+
+  <div class="notice">
+    <strong>Qué vas a conseguir.</strong> Al terminar este tutorial sabrás convertir una petición vaga («hazme un cartel de una feria medieval») en una instrucción de <strong>7 líneas</strong> que produce carteles con composición limpia, tipografía legible y cero adornos sintéticos. No necesitas saber diseñar ni programar.
+  </div>
+
+  <h2>Qué vas a aprender</h2>
+  <div class="grid g2">
+    <div class="card">
+      <span class="tag">Fundamento</span>
+      <h3>Por qué la IA hace carteles feos</h3>
+      <p>Los modelos rellenan el lienzo con «promedios estadísticos»: banderines, destellos, neones y texto deformado. Entender el mecanismo es el primer paso para neutralizarlo.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Método</span>
+      <h3>El Prompt de 7 Líneas</h3>
+      <p>Una estructura fija que controla formato, tipo de pieza, composición, estilo, texto exacto, tipografía/paleta y un filtro anti-cliché.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Herramienta</span>
+      <h3>Skill y archivo de instrucciones</h3>
+      <p>Instalarás la skill en Gemini o subirás el archivo de instrucciones a ChatGPT para que el asistente haga las preguntas correctas.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Resultado</span>
+      <h3>Carteles de nivel profesional</h3>
+      <p>Cuatro proyectos completos, iteración por cambio de estilo y una matriz de errores con soluciones verificables.</p>
+    </div>
+  </div>
+
+  <h2>Cómo usar este tutorial</h2>
+  <ol>
+    <li><strong>Lee CONCEPTOS.</strong> Te da el marco mental: qué diferencia un cartel ordinario de uno profesional.</li>
+    <li><strong>Sigue PROCEDIMIENTO.</strong> Instala la skill o sube el archivo y recorre el cuestionario de 3 pasos.</li>
+    <li><strong>Haz PRÁCTICA.</strong> Copia los cuatro proyectos tal cual y luego adáptalos a tu tema.</li>
+    <li><strong>Consulta 33 Preguntas (Q&amp;A).</strong> Tres niveles: básico, avanzado y PRO.</li>
+    <li><strong>Ante un fallo, ve a ERRORES.</strong> Matriz de causa raíz y solución técnica.</li>
+    <li><strong>Usa SKILL.md y PROMPTS</strong> como caja de herramientas copiables.</li>
+  </ol>
+
+  <div class="notice warn">
+    <strong>Requisito honesto.</strong> Este tutorial reproduce el contenido del material fuente. La instalación concreta de «Skills» en Gemini y de GPTs en ChatGPT puede cambiar de nombre o de ubicación según la versión del producto. Si un menú no coincide exactamente, busca la opción equivalente de <em>instrucciones personalizadas</em> o <em>archivos adjuntos al chat</em>: el método funciona igual.
+  </div>
+
+  <h2>Antes de empezar: lo que necesitas</h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Necesitas</th><th>¿Imprescindible?</th><th>Nota</th></tr></thead>
+      <tbody>
+        <tr><td>Cuenta de Google Gemini o de ChatGPT</td><td>Sí</td><td>La versión gratuita de ChatGPT sirve subiendo el archivo.</td></tr>
+        <tr><td>El archivo <code>SKILL.md</code> o <code>PROMPT-CHATGPT.md</code></td><td>Sí</td><td>En la pestaña <strong>SKILL.md</strong> tienes el contenido completo, listo para copiar.</td></tr>
+        <tr><td>Saber qué quieres anunciar y su texto exacto</td><td>Sí</td><td>Cuanto más breve el texto, más fiable la tipografía.</td></tr>
+        <tr><td>Conocimientos de diseño gráfico</td><td>No</td><td>El método los sustituye con preguntas guiadas.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Resumen del método en una imagen mental</h2>
+  <p>Un cartel profesional no se pide: se <em>dirige</em>. Tú decides <strong>qué</strong> se ve, <strong>cómo</strong> se ve y <strong>qué</strong> se lee. La IA solo ejecuta. Todo el tutorial consiste en separar esas dos responsabilidades.</p>
+</section>
+
+<!-- ==================== CONCEPTOS ==================== -->
+<section class="page" id="conceptos" data-t="CONCEPTOS">
+  <h2>1. Fundamentos y diagnóstico</h2>
+  <p class="lead">Antes de escribir un solo prompt, hay que entender por qué las imágenes generadas por IA fallan y qué las hace parecer profesionales.</p>
+
+  <h3>1.1. El problema de las imágenes ordinarias generadas por IA</h3>
+  <p>Cuando se pide a un modelo como Gemini o ChatGPT un cartel con instrucciones genéricas —por ejemplo: <em>«genera un cartel en formato vertical sobre una feria medieval con fecha y lugar»</em>—, la herramienta tiende a producir imágenes ordinarias y sobrecargadas.</p>
+  <p>El fenómeno ocurre porque las inteligencias artificiales, al no recibir restricciones ni un marco de diseño profesional, recurren a <strong>«promedios estadísticos»</strong>. El resultado exhibe patrones visuales que delatan de inmediato su origen sintético.</p>
+
+  <div class="notice">
+    <strong>Idea clave.</strong> La IA no elige mal: elige lo más probable. Y lo más probable es, casi siempre, el cliché.
+  </div>
+
+  <h3>1.2. Anatomía de un cartel ordinario frente a uno profesional</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Característica</th><th>Cartel ordinario (IA genérica)</th><th>Cartel profesional (Anti-Cliché)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Composición</strong></td>
+          <td>Abarrotada, sin espacio negativo; intenta rellenar cada píxel con adornos.</td>
+          <td>Equilibrada, con jerarquía visual clara, sujeto en primer plano y espacio negativo intencional.</td>
+        </tr>
+        <tr>
+          <td><strong>Texto</strong></td>
+          <td>Tipografías estándar, caracteres deformados, letras sobrantes o faltantes, palabras repetidas.</td>
+          <td>Textos nítidos, exactos y acotados estrictamente entre comillas, con norma de bloqueo.</td>
+        </tr>
+        <tr>
+          <td><strong>Paleta de colores</strong></td>
+          <td>Mezcla caótica de tonos fríos y cálidos sin criterio ni armonía cromática.</td>
+          <td>Paleta reducida y coherente con la temática o el movimiento artístico elegido.</td>
+        </tr>
+        <tr>
+          <td><strong>Clichés visuales</strong></td>
+          <td>Destellos, rayos radiales, banderines, falsos trazos de pincel, neones y volumen 3D inflado.</td>
+          <td>Limpieza estética mediante el bloqueo de clichés en la «Línea EVITA».</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>1.3. La filosofía Anti-Cliché y el rol del Director de Arte Senior</h3>
+  <p>La metodología desarrollada por <strong>Rubén Sbarsky</strong> (presentada en la guía tutorial de Joaquín Barberá) transforma la interacción con el Modelo de Lenguaje. En lugar de actuar como un simple generador de imágenes impulsivo, el modelo asume el rol de un <strong>Director de Arte y Diseñador Gráfico Senior</strong>.</p>
+  <p>Este enfoque no genera la imagen de forma inmediata; en su lugar, establece un diálogo estructurado donde el usuario define los parámetros clave del diseño antes de compilar la instrucción final.</p>
+
+  <div class="grid g3">
+    <div class="card"><span class="tag">Antes</span><h4>Usuario → IA → Imagen</h4><p class="small">Una petición vaga produce una imagen vaga. Sin control, sin criterio.</p></div>
+    <div class="card"><span class="tag">Con el método</span><h4>Usuario ↔ Director de Arte → Prompt → Imagen</h4><p class="small">El modelo pregunta, propone y compila. La imagen es la última fase, no la primera.</p></div>
+    <div class="card"><span class="tag">Resultado</span><h4>Control total de 7 variables</h4><p class="small">Cada decisión estética queda registrada y es modificable de forma aislada.</p></div>
+  </div>
+
+  <h3>1.4. Arquitectura del método: el Prompt de 7 Líneas</h3>
+  <p>El corazón del sistema radica en la compilación de un <strong>prompt estructurado en 7 líneas</strong>, diseñado para controlar cada variable del motor de generación de imágenes (DALL·E 3, Imagen 3, etc.):</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Línea</th><th>Nombre</th><th>Qué controla</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1</strong></td><td>Formato / Aspect Ratio</td><td>Proporción física del lienzo.</td><td>4:5, 9:16, 1:1, 16:9</td></tr>
+        <tr><td><strong>2</strong></td><td>Qué es</td><td>Tipo de pieza gráfica.</td><td>Cartel publicitario, afiche cultural</td></tr>
+        <tr><td><strong>3</strong></td><td>Tema / Composición</td><td>Elemento protagonista y distribución del espacio.</td><td>Un yelmo en primer plano, espacio negativo superior</td></tr>
+        <tr><td><strong>4</strong></td><td>Estilo</td><td>Técnica pictórica, movimiento artístico o formato comercial.</td><td>Editorial contemporáneo minimalista</td></tr>
+        <tr><td><strong>5</strong></td><td>Texto exacto</td><td>Frases entre comillas + norma de bloqueo.</td><td>"Feria Medieval", "Murcia"</td></tr>
+        <tr><td><strong>6</strong></td><td>Tipografía y paleta</td><td>Familia tipográfica y gama cromática.</td><td>Brutalista de palo seco; ocre, terracota, negro</td></tr>
+        <tr><td><strong>7</strong></td><td>Línea EVITA</td><td>Filtro anti-IA con los 13 clichés prohibidos.</td><td>Ver pestaña ERRORES</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="notice ok">
+    <strong>Por qué 7 líneas y no un párrafo.</strong> Porque cada línea es una variable aislada. Si el resultado falla en el color, sabes exactamente qué línea tocar. Si falla en el texto, también.
+  </div>
+
+  <h2>2. Catálogo de estilos artísticos y técnicas visuales</h2>
+  <p>Este es el repertorio del que se elige en el <strong>Paso 2</strong> del cuestionario. Se recomienda elegir un estilo principal o combinar como máximo dos estilos compatibles de bloques distintos (por ejemplo, Serigrafía + Pixel Art).</p>
+
+  <h3>2.1. Técnicas pictóricas y de imprenta</h3>
+  <div class="grid g3">
+    <div class="card"><span class="tag">Técnica</span><h4>Acuarela</h4><p class="small">Manchas de agua translúcidas, bordes orgánicos difuminados y textura de papel de grano fino.</p></div>
+    <div class="card"><span class="tag">Técnica</span><h4>Serigrafía (Screen Printing)</h4><p class="small">Tintas planas opacas, colores sólidos superpuestos y tramas de puntos visibles (<em>halftone</em>).</p></div>
+    <div class="card"><span class="tag">Técnica</span><h4>Risografía</h4><p class="small">Acabado analógico de imprenta económica, colores primarios o neón vibrantes con ligeros desajustes de plancha.</p></div>
+  </div>
+
+  <h3>2.2. Movimientos artísticos históricos</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Movimiento</th><th>Rasgos que debes pedir en la Línea 4</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Constructivismo</strong></td><td>Geometría rotunda, diagonales dinámicas, bloques de color rojo, negro y blanco, tipografías de palo seco muy pesadas.</td></tr>
+        <tr><td><strong>Bauhaus</strong></td><td>Minimalismo funcional y formas geométricas puras; retícula estricta y funcionalidad ante todo.</td></tr>
+        <tr><td><strong>Memphis</strong></td><td>Patrones recargados, alegres y geométricos de los años 80; colores vivos y formas irreverentes.</td></tr>
+        <tr><td><strong>Surrealismo</strong></td><td>Composiciones oníricas, elementos flotantes, objetos fuera de escala y atmósfera conceptual.</td></tr>
+        <tr><td><strong>Psicodelia de los 60</strong></td><td>Líneas orgánicas fluidas que se doblan, tipografías distorsionadas y alta saturación cromática.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>2.3. Formatos de diseño comercial y contemporáneo</h3>
+  <div class="grid g3">
+    <div class="card"><span class="tag">Formato</span><h4>Editorial Tech / Minimalista</h4><p class="small">Espacios en blanco masivos, retículas limpias, tipografía geométrica estructurada y elegancia corporativa.</p></div>
+    <div class="card"><span class="tag">Formato</span><h4>Pixel Art</h4><p class="small">Estética retro digital inspirada en los gráficos de videojuegos clásicos de 8 o 16 bits.</p></div>
+    <div class="card"><span class="tag">Formato</span><h4>Collage Dadá</h4><p class="small">Superposición analógica de recortes fotográficos antiguos, papel ajado y texturas mixtas.</p></div>
+  </div>
+
+  <div class="notice warn">
+    <strong>Regla de combinación.</strong> Dos estilos como máximo, y siempre de bloques distintos. «Serigrafía + Pixel Art» funciona. «Bauhaus + Constructivismo» se pisa a sí mismo: ambos son geometría dura y el resultado se vuelve ruido.
+  </div>
+</section>
+
+<!-- ==================== PROCEDIMIENTO ==================== -->
+<section class="page" id="procedimiento" data-t="PROCEDIMIENTO">
+  <h2>Requisitos, configuración y flujo de trabajo</h2>
+  <p class="lead">Tres pasos: preparar la herramienta, responder el cuestionario, compilar el prompt.</p>
+
+  <h3>1. Requisitos previos y herramientas compatibles</h3>
+  <p>Para aplicar este flujo de trabajo no se requieren conocimientos previos de diseño gráfico ni de programación. Las herramientas compatibles son:</p>
+  <ul>
+    <li><strong>Google Gemini</strong> (Web / Workspace con soporte para Skills).</li>
+    <li><strong>ChatGPT Plus / Team / Enterprise</strong> (con capacidad de carga de Skills o GPTs personalizados).</li>
+    <li><strong>ChatGPT Gratuito</strong> (mediante la subida del archivo de instrucciones <code>.md</code> o copiado directo al chat).</li>
+  </ul>
+
+  <h3>2. Configuración e instalación de Skills en Gemini (paso a paso)</h3>
+  <ol>
+    <li>Inicia sesión en <strong>Google Gemini</strong>.</li>
+    <li>Dirígete al menú de <strong>Ajustes</strong> (icono de engranaje) y selecciona la opción <strong>Habilidades / Skills</strong>.</li>
+    <li>Haz clic en <strong>Crear</strong> y posteriormente en <strong>Subir</strong>.</li>
+    <li>Selecciona el archivo <code>SKILL.md</code> («Diseñador de Carteles Profesionales Anti-IA») de tus archivos locales.</li>
+    <li>Confirma la carga haciendo clic en <strong>Abrir</strong> y luego en <strong>Crear</strong>.</li>
+    <li>Para activar la habilidad en una nueva conversación, escribe <code>@</code> seguido del nombre de la skill y la palabra <code>empezar</code> (ejemplo: <code>@Diseñador de Carteles empezar</code>).</li>
+  </ol>
+  <div class="notice">
+    <strong>Resultado esperado.</strong> El asistente responde presentándose como Director de Arte y lanzando el cuestionario del <strong>Paso 1</strong>. Si en lugar de eso genera una imagen, la skill no se ha activado: vuelve a comprobar la carga.
+  </div>
+
+  <h3>3. Configuración y preparación de ChatGPT</h3>
+  <h4>Usuarios de ChatGPT Plus</h4>
+  <p>Carga la skill del mismo modo en la sección de instrucciones o GPTs personalizados.</p>
+  <h4>Usuarios de ChatGPT Gratuito</h4>
+  <ol>
+    <li>Inicia una nueva conversación en ChatGPT.</li>
+    <li>Haz clic en el botón de adjuntar archivos (<strong>+</strong>) y sube el archivo <code>PROMPT-CHATGPT.md</code>.</li>
+    <li>Escribe la palabra <code>empezar</code> y envía el mensaje.</li>
+    <li>Alternativamente, abre <code>PROMPT-CHATGPT.md</code> en un editor de texto, copia todo su contenido y pégalo directamente como primer mensaje del chat.</li>
+  </ol>
+
+  <h3>4. Estructura de los archivos fuente</h3>
+  <p>Ambos archivos contienen las instrucciones del sistema que regulan el comportamiento del modelo:</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Bloque</th><th>Función</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Identidad del rol</strong></td><td>El modelo actúa como Director de Arte Senior.</td></tr>
+        <tr><td><strong>Restricción de generación inmediata</strong></td><td>Prohibición explícita de crear imágenes sin completar la recopilación de datos.</td></tr>
+        <tr><td><strong>Cuestionario por fases</strong></td><td>Preguntas estructuradas para obtener temas, textos, formatos y preferencias estéticas.</td></tr>
+        <tr><td><strong>Plantilla de compilación</strong></td><td>Formato estricto del prompt de 7 líneas con la Línea EVITA predefinida.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>El cuestionario interactivo en 3 pasos</h2>
+
+  <h3>Paso 1 · Recopilación de datos clave</h3>
+  <p>El asistente formulará 4 preguntas esenciales en un solo mensaje:</p>
+  <ol>
+    <li><strong>¿De qué es el cartel?</strong> (ej. verbena de verano, exposición de arte, concierto, feria, producto).</li>
+    <li><strong>¿Qué texto EXACTO debe aparecer en el cartel?</strong> Instrucción clave: únicamente el texto que el usuario escriba entre comillas aparecerá impreso, garantizando que no se añada texto extra o erróneo.</li>
+    <li><strong>¿Qué Aspect Ratio prefieres?</strong>
+      <ul>
+        <li>Vertical 4:5 — ideal para carteles estándar y publicaciones de Instagram.</li>
+        <li>Vertical 9:16 — ideal para Stories, Reels y carteles alargados.</li>
+        <li>Cuadrado 1:1.</li>
+        <li>Horizontal 16:9.</li>
+      </ul>
+    </li>
+    <li><strong>¿Quieres especificar un elemento protagonista en primer plano?</strong> (ej. un micrófono, un yelmo, un saxofón, un busto clásico, una mano). Si se deja en blanco, la IA elegirá el más adecuado.</li>
+  </ol>
+
+  <h3>Paso 2 · Selección guiada de estilo</h3>
+  <p>El sistema presenta las opciones estéticas organizadas en tres categorías claras:</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Categoría</th><th>Opciones</th></tr></thead>
+      <tbody>
+        <tr><td>Técnicas pictóricas / imprenta</td><td>Acuarela · Serigrafía · Risografía</td></tr>
+        <tr><td>Movimientos artísticos</td><td>Constructivismo · Bauhaus / Memphis · Surrealismo · Psicodelia de los 60</td></tr>
+        <tr><td>Formatos de diseño comercial</td><td>Editorial Tech / Minimalista · Pixel Art · Collage Dadá</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Paso 3 · Tipografía, paleta de colores y textura</h3>
+  <ol>
+    <li><strong>Tipografía:</strong> palo seco geométrica (Helvetica, Futura), imprenta clásica con serif, brutalista, sans-serif condensada, etc.</li>
+    <li><strong>Paleta de colores:</strong> el asistente sugiere 2 o 3 combinaciones profesionales coherentes con la temática (ej. tonos cálidos, noche urbana, blanco/negro/rojo carmín).</li>
+    <li><strong>Intensidad de textura</strong> (en ChatGPT): sutil con grano de tinta auténtico, textura limpia, etc.</li>
+  </ol>
+
+  <h2>Compilación del Prompt Maestro de 7 Líneas</h2>
+  <p>Una vez recopilados los datos, el asistente imprime en el chat el prompt compilado en un bloque de código. Este es el resultado real del proyecto de la feria medieval:</p>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>1. FORMATO / ASPECT RATIO: Vertical 4:5
+2. QUÉ ES: Cartel publicitario profesional para evento cultural.
+3. TEMA / COMPOSICIÓN: Un yelmo medieval en primer plano, composición limpia con espacio negativo y jerarquía visual.
+4. ESTILO: Estilo editorial contemporáneo con enfoque gráfico minimalista.
+5. TEXTO EXACTO: "Feria Medieval", "Murcia", "12-14 de Octubre" y ningún otro texto, sin letras inventadas, sin símbolos de relleno.
+6. TIPOGRAFÍA Y PALETA: Fuente brutalista de palo seco, gama cromática de colores cálidos (ocre, terracota, negro).
+7. LÍNEA EVITA (Filtro Anti-IA Estricto): Evita banderines genéricos, guirnaldas de bombilla repetitivas, confetis de relleno, franjas de pincelada detrás del texto, destellos de luz, líneas de velocidad, rayos radiales decorativos, filetes horizontales finos, trazos de pincel sueltos, textura desgastada falsa, caras genéricas sonriendo en grupo, estética 3D inflada, neones saturados.</pre>
+  </div>
+
+  <h2>Modo avanzado de un solo paso (bypass del cuestionario)</h2>
+  <p>Para usuarios experimentados que desean saltarse el cuestionario interactivo, es posible enviar las instrucciones en una sola instrucción combinada.</p>
+  <ol>
+    <li>Adjunta el archivo <code>PROMPT-CHATGPT.md</code> o asegúrate de tener la skill activa.</li>
+    <li>Selecciona la opción de generar imagen.</li>
+    <li>Introduce una instrucción consolidada que contenga todos los parámetros.</li>
+  </ol>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>Campaña de moda, el título 'FORMA', subtítulo 'Nueva Colección', el formato 4:5. Quiero de protagonista en el cartel en primer plano una modelo con estilismo urbano. Estilo editorial de moda con influencia Bauhaus. Tipografía sans-serif condensada y la gama de colores quiero blanco, negro y rojo carmín.</pre>
+  </div>
+  <p>El modelo procesará todas las directrices técnicas de golpe y generará el cartel inmediatamente sin formular preguntas intermedias.</p>
+
+  <h2>Protocolo de iteración y cambio de estilo</h2>
+  <p>Una vez entregado el primer cartel, el sistema ofrecerá la siguiente opción de exploración:</p>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>¿Quieres probar este mismo cartel con un estilo diferente manteniendo los textos, el aspect ratio, el elemento principal y las restricciones? Dime qué otro estilo te gustaría aplicar.</pre>
+  </div>
+  <div class="notice ok">
+    <strong>Regla de iteración.</strong> Al solicitar un cambio de estilo (por ejemplo: <em>«cambia a estilo serigrafía»</em> o <em>«cambia el estilo a Collage Dadá»</em>), el asistente mantendrá <strong>intactos</strong> todos los demás parámetros —formato, textos exactos entre comillas, sujeto en primer plano, tipografía, paleta y Línea EVITA— actualizando únicamente la línea de <strong>Estilo</strong> para generar la nueva versión.
+  </div>
+</section>
+
+<!-- ==================== PRÁCTICA ==================== -->
+<section class="page" id="practica" data-t="PRÁCTICA">
+  <h2>Casos prácticos y proyectos integradores</h2>
+  <p class="lead">Cuatro proyectos completos. Cópialos tal cual la primera vez; después adáptalos a tu propio tema.</p>
+
+  <h3>Proyecto 1 · Feria Medieval en Murcia (Gemini + Skill)</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Parámetro</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr><td>Herramienta</td><td>Google Gemini con <code>SKILL.md</code> cargada</td></tr>
+        <tr><td>Tema</td><td>Feria Medieval en Murcia</td></tr>
+        <tr><td>Textos exactos</td><td><code>"Feria Medieval"</code>, <code>"Murcia"</code>, <code>"12-14 Octubre"</code></td></tr>
+        <tr><td>Aspect Ratio</td><td>4:5</td></tr>
+        <tr><td>Primer plano</td><td>Un yelmo medieval</td></tr>
+        <tr><td>Estilo</td><td>Editorial contemporáneo</td></tr>
+        <tr><td>Tipografía y paleta</td><td>Fuente brutalista y colores cálidos</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Resultado esperado:</strong> cartel limpio, con el yelmo en primer plano, excelente espacio negativo, tipografía legible y ausencia de clichés medievales sobrecargados.</p>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>1. FORMATO / ASPECT RATIO: Vertical 4:5
+2. QUÉ ES: Cartel publicitario profesional para evento cultural.
+3. TEMA / COMPOSICIÓN: Un yelmo medieval en primer plano, composición limpia con espacio negativo y jerarquía visual.
+4. ESTILO: Estilo editorial contemporáneo con enfoque gráfico minimalista.
+5. TEXTO EXACTO: "Feria Medieval", "Murcia", "12-14 de Octubre" y ningún otro texto, sin letras inventadas, sin símbolos de relleno.
+6. TIPOGRAFÍA Y PALETA: Fuente brutalista de palo seco, gama cromática de colores cálidos (ocre, terracota, negro).
+7. LÍNEA EVITA (Filtro Anti-IA Estricto): Evita banderines genéricos, guirnaldas de bombilla repetitivas, confetis de relleno, franjas de pincelada detrás del texto, destellos de luz, líneas de velocidad, rayos radiales decorativos, filetes horizontales finos, trazos de pincel sueltos, textura desgastada falsa, caras genéricas sonriendo en grupo, estética 3D inflada, neones saturados.</pre>
+  </div>
+
+  <h3>Proyecto 2 · Festival de Jazz «Noche Urbana» (ChatGPT interactivo)</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Parámetro</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr><td>Herramienta</td><td>ChatGPT con <code>PROMPT-CHATGPT.md</code></td></tr>
+        <tr><td>Tema</td><td>Festival de Jazz</td></tr>
+        <tr><td>Textos exactos</td><td><code>"Jazz Night"</code>, <code>"Urban Park"</code>, <code>"22:00h"</code></td></tr>
+        <tr><td>Aspect Ratio</td><td>4:5</td></tr>
+        <tr><td>Primer plano</td><td>Un saxofón</td></tr>
+        <tr><td>Estilo</td><td>Serigrafía vintage</td></tr>
+        <tr><td>Paleta</td><td>Noche urbana (azules profundos, dorados, negro)</td></tr>
+        <tr><td>Tipografía y textura</td><td>Palo seco con grano de tinta auténtico sutil</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Resultado esperado:</strong> acabado analógico de imprenta, superposición de tintas opacas e ilustración icónica sin distorsión tipográfica.</p>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>1. FORMATO / ASPECT RATIO: Vertical 4:5
+2. QUÉ ES: Cartel publicitario profesional para festival de música.
+3. TEMA / COMPOSICIÓN: Un saxofón en primer plano, composición limpia con espacio negativo superior para el texto y jerarquía visual clara.
+4. ESTILO: Serigrafía vintage, tintas planas opacas, colores sólidos superpuestos y trama de puntos halftone visible.
+5. TEXTO EXACTO: "Jazz Night", "Urban Park", "22:00h" y ningún otro texto, sin letras inventadas, sin símbolos de relleno.
+6. TIPOGRAFÍA Y PALETA: Palo seco geométrica, grano de tinta auténtico sutil; paleta noche urbana (azul profundo, dorado, negro).
+7. LÍNEA EVITA (Filtro Anti-IA Estricto): Evita banderines genéricos, guirnaldas de bombilla repetitivas, confetis de relleno, franjas de pincelada detrás del texto, destellos de luz, líneas de velocidad, rayos radiales decorativos, filetes horizontales finos, trazos de pincel sueltos, textura desgastada falsa, caras genéricas sonriendo en grupo, estética 3D inflada, neones saturados.</pre>
+  </div>
+
+  <h3>Proyecto 3 · Campaña de moda urbana «FORMA» (ChatGPT modo avanzado)</h3>
+  <p><strong>Entrada única (bypass):</strong> campaña de moda, título <code>"FORMA"</code>, subtítulo <code>"Nueva Colección"</code>, formato 4:5, modelo urbana en primer plano, estilo editorial con influencia Bauhaus, tipografía sans-serif condensada, paleta blanco/negro/rojo carmín.</p>
+  <p><strong>Resultado esperado:</strong> composición de alto impacto editorial, donde el título aparece parcialmente cortado detrás del sujeto principal, con equilibrio geométrico perfecto.</p>
+
+  <h3>Proyecto 4 · Re-estilización y prueba multiestilo</h3>
+  <div class="grid g2">
+    <div class="card">
+      <span class="tag">Caso A</span>
+      <h4>Feria Medieval → Serigrafía</h4>
+      <p class="small"><strong>Solicitud:</strong> «cambia a estilo serigrafía».</p>
+      <p class="small"><strong>Efecto:</strong> mantiene el yelmo, los textos y la paleta, pero aplica tramas de puntos y tintas planas opacas.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Caso B</span>
+      <h4>Campaña de moda → Collage Dadá</h4>
+      <p class="small"><strong>Solicitud:</strong> «cambia el estilo de la imagen a estilo collage dadá».</p>
+      <p class="small"><strong>Efecto:</strong> mantiene la modelo urbana, la paleta tricolor y los textos, pero transforma el fondo y la figura en un ensamblaje de recortes fotográficos y papel ajado.</p>
+    </div>
+  </div>
+
+  <div class="notice">
+    <strong>Ejercicio guiado.</strong> Diseña el prompt de 7 líneas para el cartel de tu propio proyecto. Antes de enviarlo, comprueba: (1) todos los textos entre comillas, (2) la cláusula «y ningún otro texto, sin letras inventadas, sin símbolos de relleno», (3) un objeto protagonista explícito, (4) paleta de 2 o 3 colores como máximo y (5) la Línea EVITA completa.
+  </div>
+</section>
+
+<!-- ==================== 33 PREGUNTAS ==================== -->
+<section class="page" id="qa" data-t="33 Preguntas (Q&amp;A)">
+  <h2>33 preguntas frecuentes en 3 niveles</h2>
+  <p class="lead">Básico, avanzado y PRO. Las respuestas reproducen el contenido del material fuente.</p>
+
+  <h3>Nivel básico <span class="tag">11 preguntas</span></h3>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">1</span>¿Por qué mis carteles generados con IA suelen parecer ordinarios?</p>
+    <p>Porque las herramientas de IA tienden a rellenar el lienzo con promedios estadísticos, agregando elementos recargados, tipografías estándar y combinaciones de colores sin criterio cuando no se les dan instrucciones restrictivas.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">2</span>¿Qué es la metodología Anti-Cliché de Rubén Sbarsky?</p>
+    <p>Es un sistema estructurado que convierte a la IA en un Director de Arte Senior mediante un flujo interactivo y un prompt de 7 líneas con un filtro de exclusión estricto.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">3</span>¿Necesito saber programar o diseñar para usar este método?</p>
+    <p>No. El método está diseñado para guiarse mediante preguntas sencillas en lenguaje natural.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">4</span>¿Qué es el Prompt de 7 Líneas?</p>
+    <p>Es una estructura fija de prompt que organiza las instrucciones en 7 variables específicas: Formato, Qué es, Composición, Estilo, Texto Exacto, Tipografía/Paleta y Línea EVITA.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">5</span>¿Cómo garantizo que la IA no invente texto o cometa faltas de ortografía?</p>
+    <p>Escribiendo el texto exacto entre comillas e incluyendo la norma de bloqueo: <em>«y ningún otro texto, sin letras inventadas, sin símbolos de relleno»</em>.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">6</span>¿Puedo usar esta metodología en la versión gratuita de ChatGPT?</p>
+    <p>Sí, subiendo el archivo <code>PROMPT-CHATGPT.md</code> o copiando su contenido al inicio del chat.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">7</span>¿Qué es la «Línea EVITA»?</p>
+    <p>Es la séptima línea del prompt que prohíbe expresamente los 13 clichés visuales más comunes de la IA (destellos, banderines, falsos pincelazos, etc.).</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">8</span>¿Qué significa Aspect Ratio?</p>
+    <p>Es la relación entre el ancho y el alto de la imagen (ej. 4:5 para carteles estándar, 9:16 para Stories).</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">9</span>¿Qué ocurre si no especifico un elemento en primer plano?</p>
+    <p>La IA elegirá automáticamente el objeto principal que considere más adecuado para la temática del cartel.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">10</span>¿Cómo se activa la Skill en Google Gemini?</p>
+    <p>Cargando el archivo <code>SKILL.md</code> en Ajustes &gt; Habilidades y escribiendo <code>@ [nombre de la skill] empezar</code> en un chat.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">11</span>¿Puedo cambiar el estilo del cartel sin volver a escribir todo?</p>
+    <p>Sí. Tras generar el primer cartel, pide un cambio de estilo y el sistema mantendrá intactos los textos, el formato y el elemento principal.</p>
+  </div>
+
+  <h3>Nivel avanzado <span class="tag">11 preguntas</span></h3>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">12</span>¿En qué se diferencia el estilo Risografía de la Serigrafía en un prompt?</p>
+    <p>La risografía aporta acabados analógicos de imprenta económica con ligeros desajustes de plancha y colores primarios/neón; la serigrafía enfoca tintas planas opacas y tramas de puntos (<em>halftone</em>).</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">13</span>¿Cómo funciona el modo «Bypass» o de un solo paso?</p>
+    <p>Consiste en enviar una única instrucción que combine todos los parámetros requeridos junto con el archivo de reglas, saltándose el cuestionario interactivo.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">14</span>¿Por qué es crucial el espacio negativo en el diseño de carteles?</p>
+    <p>Permite descansar la vista, otorga legibilidad al texto y evita la apariencia abarrotada típica de la IA.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">15</span>¿Qué es la tipografía «brutalista»?</p>
+    <p>Es un estilo tipográfico pesado, de formas rotundas y sin adornos, con gran presencia visual e impacto comercial.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">16</span>¿Cómo influye el Constructivismo Ruso en el diseño de un cartel?</p>
+    <p>Aporta geometría estricta, líneas diagonales dinámicas, bloques de color contraste (rojo, negro, blanco) y tipografías pesadas de palo seco.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">17</span>¿Qué ventaja ofrece especificar un elemento en primer plano (<em>foreground</em>)?</p>
+    <p>Crea profundidad de campo y establece un foco de atención claro para el espectador.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">18</span>¿Qué hacer si el generador coloca el texto detrás del sujeto impidiendo su lectura?</p>
+    <p>Ajustar la Línea 3 pidiendo <em>«texto en capa superior totalmente visible sobre fondo despejado»</em>.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">19</span>¿Puedo combinar dos estilos artísticos diferentes?</p>
+    <p>Sí, siempre que sean de bloques distintos y complementarios (por ejemplo, Serigrafía + Pixel Art o Bauhaus + Editorial Tech).</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">20</span>¿Cómo influye la textura en la percepción de un cartel sintético?</p>
+    <p>Agregar grano de tinta sutil o textura de papel de grano fino elimina la pulcritud digital plástica de los renders sintéticos.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">21</span>¿Qué es el estilo «Editorial Tech»?</p>
+    <p>Es un formato comercial caracterizado por espacios blancos masivos, retículas limpias, tipografía geométrica y estética corporativa elegante.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">22</span>¿Por qué se prohíben las «franjas de pincelada detrás del texto» en la Línea EVITA?</p>
+    <p>Porque la IA suele colocar manchas de pintura artificiales para simular contraste, lo que ensucia la composición y delata el uso de generadores automáticos.</p>
+  </div>
+
+  <h3>Nivel PRO <span class="tag">11 preguntas</span></h3>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">23</span>¿Cómo se logra el efecto tipográfico en el que el sujeto cubre parcialmente el título sin perder legibilidad?</p>
+    <p>Especificando en la composición un estilo editorial de moda avanzado donde el título se ubique en segundo plano tras el sujeto principal en primer plano.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">24</span>¿Cuál es el comportamiento técnico del LLM al compilar internamente las 7 líneas?</p>
+    <p>El LLM actúa como un compilador de parámetros que traduce el lenguaje natural conversacional en un conjunto acotado de tokens de control visual sin ambigüedad.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">25</span>¿Cómo afecta la relación de aspecto 4:5 a la distribución tipográfica frente a la 9:16?</p>
+    <p>El formato 4:5 ofrece una proporción más compacta adecuada para composiciones centradas o de bloque; el 9:16 exige mayor verticalidad y distribución jerárquica en tercios.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">26</span>¿Cómo se simula el desajuste de plancha (<em>misregistration</em>) característico de la risografía?</p>
+    <p>Solicitando explícitamente en la Línea 4 <em>«acabado analógico de imprenta económica con desajustes de plancha de color y solapamiento de capas»</em>.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">27</span>¿De qué forma se gestiona la coherencia de marca en una serie de carteles?</p>
+    <p>Fijando como constantes las líneas 1, 5 (tipografía/paleta) y 7, e iterando únicamente sobre la Línea 3 (sujeto principal) o la Línea 4 (estilo dentro de la misma familia).</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">28</span>¿Por qué la norma de exclusión de la Línea 5 es más efectiva que simplemente pedir «texto correcto»?</p>
+    <p>Porque los modelos de difusión de imágenes tienden a rellenar espacios vacíos con pseudo-texto; la prohibición explícita reduce la probabilidad de generación de tokens tipográficos aleatorios.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">29</span>¿Qué diferencia técnica existe entre ejecutar el método en Gemini e Imagen 3 frente a ChatGPT y DALL·E 3?</p>
+    <p>DALL·E 3 tiende a reinterpretar y expandir el prompt internamente, por lo que la Línea EVITA es crítica para frenar su tendencia a la ornamentación; Gemini/Imagen 3 se adhiere más literalmente a la jerarquía de instrucciones.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">30</span>¿Cómo evitar la saturación cromática excesiva en estilos psicodélicos?</p>
+    <p>Definiendo en la Línea 6 una paleta reducida de máximo 3 colores específicos (ej. <em>«amarillo mostaza, violeta profundo y verde menta»</em>).</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">31</span>¿Qué función cumple el estilo «Collage Dadá» en el proceso de iteración?</p>
+    <p>Permite deconstruir la imagen vectorial o fotográfica previa en un ensamblaje analógico de recortes y texturas mixtas sin alterar el mensaje tipográfico ni el sujeto.</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">32</span>¿Cómo solucionar la distorsión tipográfica cuando el texto contiene acentos o caracteres especiales?</p>
+    <p>Escribiendo el texto en la Línea 5 en mayúsculas sostenidas y simplificando la cadena entre comillas (ej. <code>"MURCIA"</code>).</p>
+  </div>
+
+  <div class="qa-block">
+    <p class="q"><span class="num">33</span>¿Cuál es el impacto del espacio negativo en la conversión publicitaria de un cartel profesional?</p>
+    <p>Aumenta la velocidad de procesamiento visual del espectador, destaca la llamada a la acción y proyecta una imagen de marca de alta gama y sofisticación.</p>
+  </div>
+</section>
+
+<!-- ==================== ERRORES ==================== -->
+<section class="page" id="errores" data-t="ERRORES">
+  <h2>Solución de problemas, errores y buenas prácticas</h2>
+  <p class="lead">Cuando algo falla, casi siempre falla en la misma línea del prompt. Esta sección te dice en cuál.</p>
+
+  <h3>Matriz de errores comunes y soluciones técnicas</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Error detectado</th><th>Causa raíz</th><th>Solución técnica en el prompt</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Texto corrupto, letras fantasma o números repetidos</td>
+          <td>Faltan comillas exactas o no se incluyó la norma de bloqueo.</td>
+          <td>Colocar el texto estrictamente entre comillas y añadir: <code>"y ningún otro texto, sin letras inventadas, sin símbolos de relleno"</code>.</td>
+        </tr>
+        <tr>
+          <td>Composición abarrotada sin espacio para leer</td>
+          <td>No se especificó un elemento principal en primer plano.</td>
+          <td>Definir un objeto claro en la Línea 3 (ej. <em>«un saxofón en primer plano»</em>) e indicar <em>«espacio negativo masivo»</em>.</td>
+        </tr>
+        <tr>
+          <td>Colores chillones y aspecto de render 3D plástico</td>
+          <td>La IA aplicó estilos predeterminados no restringidos.</td>
+          <td>Definir una paleta acotada de 2-3 colores y verificar que la Línea EVITA contenga <em>«estética 3D inflada, neones saturados»</em>.</td>
+        </tr>
+        <tr>
+          <td>Adornos repetitivos (banderines, destellos, trazos)</td>
+          <td>Clichés predeterminados de los modelos de difusión.</td>
+          <td>Mantener activa y completa la Línea 7 («Línea EVITA») en todas las iteraciones.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Reglas de oro para la renderización impecable de texto</h3>
+  <ol>
+    <li><strong>Delimitación estricta:</strong> utiliza siempre comillas dobles para cada cadena de texto.</li>
+    <li><strong>Brevedad:</strong> a menor cantidad de caracteres solicitados, mayor será la precisión del motor tipográfico.</li>
+    <li><strong>Cláusula de exclusión:</strong> no omitas nunca la frase final en la Línea 5: <em>«…y ningún otro texto, sin letras inventadas, sin símbolos de relleno»</em>.</li>
+  </ol>
+
+  <h3>Control del espacio negativo y jerarquía visual</h3>
+  <p>El espacio negativo —las áreas vacías alrededor del sujeto— es fundamental para garantizar que el cartel no parezca sintético. Especifica siempre en la Línea 3 la disposición espacial, por ejemplo: <em>«composición asimétrica con espacio negativo superior para el texto»</em>.</p>
+
+  <h3>La «Línea EVITA»: desglose del filtro anti-IA estricto</h3>
+  <p>La séptima línea del prompt actúa como un escudo de contención contra los algoritmos de relleno automático. Debe incluir literalmente:</p>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>Evita banderines genéricos, guirnaldas de bombilla repetitivas, confetis de relleno, franjas de pincelada detrás del texto, destellos de luz, líneas de velocidad, rayos radiales decorativos, filetes horizontales finos, trazos de pincel sueltos, textura desgastada falsa, caras genéricas sonriendo en grupo, estética 3D inflada, neones saturados.</pre>
+  </div>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Cliché prohibido</th><th>Por qué se bloquea</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Banderines genéricos</td><td>Relleno decorativo automático que simula «ambiente festivo».</td></tr>
+        <tr><td>2</td><td>Guirnaldas de bombilla repetitivas</td><td>Se repiten en bucle y saturan el fondo.</td></tr>
+        <tr><td>3</td><td>Confetis de relleno</td><td>Partículas sin función compositiva.</td></tr>
+        <tr><td>4</td><td>Franjas de pincelada detrás del texto</td><td>Manchas artificiales para forzar contraste; ensucian.</td></tr>
+        <tr><td>5</td><td>Destellos de luz</td><td>Efecto «mágico» que delata el origen sintético.</td></tr>
+        <tr><td>6</td><td>Líneas de velocidad</td><td>Aportan dinamismo falso sin significado.</td></tr>
+        <tr><td>7</td><td>Rayos radiales decorativos</td><td>Estructura de fondo perezosa y repetida.</td></tr>
+        <tr><td>8</td><td>Filetes horizontales finos</td><td>Divisores automáticos que rompen la jerarquía.</td></tr>
+        <tr><td>9</td><td>Trazos de pincel sueltos</td><td>Textura fingida sin relación con la técnica pedida.</td></tr>
+        <tr><td>10</td><td>Textura desgastada falsa</td><td>Envejecimiento digital uniforme, sin lógica de imprenta.</td></tr>
+        <tr><td>11</td><td>Caras genéricas sonriendo en grupo</td><td>El cliché de stock más reconocible de todos.</td></tr>
+        <tr><td>12</td><td>Estética 3D inflada</td><td>Volumen plástico ajeno a cualquier técnica gráfica.</td></tr>
+        <tr><td>13</td><td>Neones saturados</td><td>Saturación cromática que destruye la paleta.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Lista de comprobación antes de enviar un prompt</h3>
+  <label class="chk"><input type="checkbox" data-k="e1"><span>He escrito todos los textos entre comillas dobles.</span></label>
+  <label class="chk"><input type="checkbox" data-k="e2"><span>He añadido «y ningún otro texto, sin letras inventadas, sin símbolos de relleno».</span></label>
+  <label class="chk"><input type="checkbox" data-k="e3"><span>He definido un objeto protagonista en primer plano.</span></label>
+  <label class="chk"><input type="checkbox" data-k="e4"><span>La paleta tiene 2 o 3 colores, no más.</span></label>
+  <label class="chk"><input type="checkbox" data-k="e5"><span>La Línea EVITA está completa, con los 13 clichés.</span></label>
+  <label class="chk"><input type="checkbox" data-k="e6"><span>He indicado la disposición del espacio negativo en la Línea 3.</span></label>
+  <label class="chk"><input type="checkbox" data-k="e7"><span>He comprobado que el estilo elegido no se contradice con otro.</span></label>
+</section>
+
+<!-- ==================== RESUMEN ==================== -->
+<section class="page" id="resumen" data-t="RESUMEN">
+  <h2>Resumen ejecutivo</h2>
+  <p class="lead">Si solo pudieras llevarte una página de este tutorial, sería esta.</p>
+
+  <div class="grid g2">
+    <div class="card">
+      <span class="tag">Idea 1</span>
+      <h3>La IA no falla: promedia</h3>
+      <p>Sin restricciones, el modelo devuelve el cliché más probable. Restringir es diseñar.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Idea 2</span>
+      <h3>El rol es Director de Arte</h3>
+      <p>El modelo pregunta antes de generar. Tú decides qué, cómo y qué se lee.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Idea 3</span>
+      <h3>Siete variables aisladas</h3>
+      <p>Si el resultado falla en algo, sabes exactamente qué línea corregir.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Idea 4</span>
+      <h3>Iterar es cambiar una línea</h3>
+      <p>El cambio de estilo solo toca la Línea 4. Todo lo demás permanece intacto.</p>
+    </div>
+  </div>
+
+  <h3>Las 7 líneas, de un vistazo</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Línea</th><th>Qué escribir</th><th>Error típico si se omite</th></tr></thead>
+      <tbody>
+        <tr><td>1 · Formato</td><td><code>Vertical 4:5</code></td><td>Composición desaprovechada o recortada.</td></tr>
+        <tr><td>2 · Qué es</td><td>Cartel publicitario / afiche cultural</td><td>El modelo genera una ilustración sin función gráfica.</td></tr>
+        <tr><td>3 · Composición</td><td>Objeto en primer plano + espacio negativo</td><td>Lienzo abarrotado, sin foco.</td></tr>
+        <tr><td>4 · Estilo</td><td>Una técnica o movimiento concreto</td><td>Estilo híbrido genérico y plástico.</td></tr>
+        <tr><td>5 · Texto exacto</td><td>Frases entre comillas + norma de bloqueo</td><td>Letras fantasma y pseudo-texto.</td></tr>
+        <tr><td>6 · Tipografía y paleta</td><td>Familia + 2-3 colores</td><td>Mezcla cromática caótica.</td></tr>
+        <tr><td>7 · Línea EVITA</td><td>Los 13 clichés, literalmente</td><td>Banderines, destellos y neones.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Combinaciones de estilo que funcionan</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Combinación</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td>Serigrafía + Pixel Art</td><td>Retro digital con trama de imprenta.</td></tr>
+        <tr><td>Bauhaus + Editorial Tech</td><td>Geometría funcional con retícula corporativa.</td></tr>
+        <tr><td>Constructivismo + Risografía</td><td>Geometría dura con desajuste de plancha analógico.</td></tr>
+        <tr><td>Editorial minimalista + Collage Dadá</td><td>Retícula limpia invadida por recortes; alto contraste conceptual.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Checklist final del proyecto</h3>
+  <label class="chk"><input type="checkbox" data-k="r1"><span>He definido el tema y el texto exacto.</span></label>
+  <label class="chk"><input type="checkbox" data-k="r2"><span>He elegido un aspect ratio coherente con el destino (impreso, redes, stories).</span></label>
+  <label class="chk"><input type="checkbox" data-k="r3"><span>He elegido un estilo y, como máximo, un segundo compatible.</span></label>
+  <label class="chk"><input type="checkbox" data-k="r4"><span>He compilado las 7 líneas en orden.</span></label>
+  <label class="chk"><input type="checkbox" data-k="r5"><span>He revisado el resultado y he iterado solo la línea necesaria.</span></label>
+  <label class="chk"><input type="checkbox" data-k="r6"><span>He guardado el prompt final para reutilizarlo en la próxima pieza.</span></label>
+
+  <div class="notice ok">
+    <strong>Para cerrar.</strong> El valor del método no está en la IA, sino en la disciplina de las siete preguntas. Una vez interiorizadas, cualquier herramienta de generación de imágenes sirve.
+  </div>
+</section>
+
+<!-- ==================== SKILL.md ==================== -->
+<section class="page" id="skill" data-t="SKILL.md">
+  <h2>Archivos fuente: <code>SKILL.md</code> y <code>PROMPT-CHATGPT.md</code></h2>
+  <p class="lead">Contenido listo para copiar y pegar. Cárgalo como skill en Gemini o súbelo como archivo en ChatGPT.</p>
+
+  <div class="notice warn">
+    <strong>Aviso de fidelidad.</strong> El material fuente describe la <em>estructura</em> de estos dos archivos (identidad del rol, restricción de generación inmediata, cuestionario por fases y plantilla de compilación), pero no reproduce su texto literal. El contenido que sigue es una <strong>reconstrucción funcional</strong> fiel a esa estructura descrita. No se presenta como el texto oficial original.
+  </div>
+
+  <h3>Instalación rápida</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Plataforma</th><th>Qué hacer</th></tr></thead>
+      <tbody>
+        <tr><td>Gemini</td><td>Ajustes → Habilidades / Skills → Crear → Subir → seleccionar <code>SKILL.md</code> → Crear. Luego en el chat: <code>@Diseñador de Carteles empezar</code>.</td></tr>
+        <tr><td>ChatGPT Plus</td><td>Cargar el archivo en instrucciones personalizadas o en un GPT propio.</td></tr>
+        <tr><td>ChatGPT Gratuito</td><td>Adjuntar el <code>.md</code> con el botón <strong>+</strong> y escribir <code>empezar</code>. O pegar el contenido completo como primer mensaje.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Archivo <code>SKILL.md</code></h3>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre># SKILL — Diseñador de Carteles Profesionales (Anti-IA)
+
+## 1. IDENTIDAD
+Eres un Director de Arte y Diseñador Gráfico Senior con más de 20 años de
+experiencia en cartelería cultural, publicitaria y editorial. Trabajas con
+metodología Anti-Cliché: rechazas por sistema los recursos visuales
+sobredimensionados que delatan el origen sintético de una imagen.
+
+## 2. REGLA DE ORO — NO NEGOCIABLE
+NO generes ninguna imagen hasta haber completado el cuestionario de la FASE 1.
+Si el usuario pide una imagen directamente, responde pidiendo los datos que
+falten, en un único mensaje y con un máximo de 4 preguntas.
+
+## 3. FASE 1 — CUESTIONARIO EN 3 PASOS
+
+### Paso 1 · Datos clave (las 4 preguntas, en un solo mensaje)
+1. ¿De qué es el cartel? (evento cultural, concierto, feria, producto, moda…)
+2. ¿Qué texto EXACTO debe aparecer? Escribe cada frase entre comillas.
+   Advertencia al usuario: solo se imprimirá lo que esté entre comillas.
+3. ¿Qué aspect ratio prefieres? 4:5 (estándar), 9:16 (stories), 1:1, 16:9.
+4. ¿Elemento protagonista en primer plano? (objeto, figura o "elige tú").
+
+### Paso 2 · Estilo
+Ofrece estas opciones agrupadas, y recomienda elegir una o, como máximo,
+dos compatibles de bloques distintos:
+- Técnicas pictóricas / imprenta: Acuarela · Serigrafía · Risografía
+- Movimientos artísticos: Constructivismo · Bauhaus / Memphis · Surrealismo ·
+  Psicodelia de los 60
+- Formatos comerciales: Editorial Tech / Minimalista · Pixel Art · Collage Dadá
+
+### Paso 3 · Tipografía, paleta y textura
+1. Tipografía: palo seco geométrica / serif clásica / brutalista /
+   sans-serif condensada.
+2. Paleta: propón 2 o 3 combinaciones de 2-3 colores coherentes con el tema.
+3. Textura: limpia o con grano de tinta sutil.
+
+## 4. FASE 2 — COMPILACIÓN DEL PROMPT DE 7 LÍNEAS
+Cuando tengas todos los datos, imprime el prompt en un bloque de código con
+exactamente este formato y en este orden:
+
+1. FORMATO / ASPECT RATIO: <valor>
+2. QUÉ ES: <tipo de pieza>
+3. TEMA / COMPOSICIÓN: <protagonista en primer plano> + <espacio negativo>
+4. ESTILO: <técnica o movimiento con rigor técnico>
+5. TEXTO EXACTO: "<texto 1>", "<texto 2>", "<texto 3>" y ningún otro texto,
+   sin letras inventadas, sin símbolos de relleno.
+6. TIPOGRAFÍA Y PALETA: <familia tipográfica>, <2-3 colores>
+7. LÍNEA EVITA (Filtro Anti-IA Estricto): Evita banderines genéricos,
+   guirnaldas de bombilla repetitivas, confetis de relleno, franjas de
+   pincelada detrás del texto, destellos de luz, líneas de velocidad, rayos
+   radiales decorativos, filetes horizontales finos, trazos de pincel sueltos,
+   textura desgastada falsa, caras genéricas sonriendo en grupo, estética 3D
+   inflada, neones saturados.
+
+## 5. FASE 3 — ITERACIÓN
+Tras entregar la primera imagen, ofrece siempre:
+"¿Quieres probar este mismo cartel con un estilo diferente manteniendo los
+textos, el aspect ratio, el elemento principal y las restricciones?"
+Al recibir un cambio de estilo, mantén INTACTAS las líneas 1, 2, 3, 5, 6 y 7
+y modifica únicamente la línea 4.
+
+## 6. PROHIBICIONES
+- No añadas texto que el usuario no haya escrito entre comillas.
+- No inventes fechas, horarios, precios ni nombres propios.
+- No uses más de 3 colores en la paleta.
+- No propongas estéticas 3D, neón saturado ni degradados plásticos.
+
+## 7. TONO
+Profesional, directo y pedagógico. Explica brevemente el motivo de cada
+decisión de diseño en una sola frase.</pre>
+  </div>
+
+  <h3>Archivo <code>PROMPT-CHATGPT.md</code></h3>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>ACTÚA COMO DIRECTOR DE ARTE SENIOR (METODOLOGÍA ANTI-CLICHÉ)
+
+Vas a diseñar carteles profesionales conmigo. Antes de generar nada, aplica
+este protocolo.
+
+REGLA 1 — No generes la imagen todavía.
+Hazme estas 4 preguntas en un solo mensaje:
+1. ¿De qué es el cartel?
+2. ¿Qué texto EXACTO debe aparecer? Escríbelo entre comillas.
+3. ¿Aspect ratio? 4:5 / 9:16 / 1:1 / 16:9
+4. ¿Elemento protagonista en primer plano?
+
+REGLA 2 — Después pregúntame el estilo.
+Ofréceme estas opciones agrupadas:
+- Técnicas: Acuarela · Serigrafía · Risografía
+- Movimientos: Constructivismo · Bauhaus / Memphis · Surrealismo ·
+  Psicodelia de los 60
+- Formatos comerciales: Editorial Tech / Minimalista · Pixel Art · Collage Dadá
+Recomiéndame una sola o, como máximo, dos compatibles de bloques distintos.
+
+REGLA 3 — Después pregúntame tipografía, paleta y textura.
+Propónme 2 o 3 combinaciones de color profesionales de 2-3 colores cada una.
+
+REGLA 4 — Compila el prompt de 7 líneas.
+Imprímelo en un bloque de código, exactamente con este formato:
+
+1. FORMATO / ASPECT RATIO:
+2. QUÉ ES:
+3. TEMA / COMPOSICIÓN:
+4. ESTILO:
+5. TEXTO EXACTO: "" y ningún otro texto, sin letras inventadas, sin símbolos
+   de relleno.
+6. TIPOGRAFÍA Y PALETA:
+7. LÍNEA EVITA (Filtro Anti-IA Estricto): Evita banderines genéricos,
+   guirnaldas de bombilla repetitivas, confetis de relleno, franjas de
+   pincelada detrás del texto, destellos de luz, líneas de velocidad, rayos
+   radiales decorativos, filetes horizontales finos, trazos de pincel sueltos,
+   textura desgastada falsa, caras genéricas sonriendo en grupo, estética 3D
+   inflada, neones saturados.
+
+REGLA 5 — Genera la imagen solo después de mi confirmación.
+
+REGLA 6 — Al terminar, ofréceme cambiar solo el estilo manteniendo textos,
+formato, protagonista, tipografía, paleta y Línea EVITA.
+
+Escribe en español. No añadas texto que yo no haya escrito entre comillas.</pre>
+  </div>
+
+  <h3>Cómo verificar que la skill está activa</h3>
+  <ol>
+    <li>Abre un chat nuevo y escribe <code>empezar</code>.</li>
+    <li>Si responde con las 4 preguntas del Paso 1, está funcionando.</li>
+    <li>Si responde generando una imagen, la skill no se cargó: vuelve a instalarla o pega el contenido del archivo como primer mensaje.</li>
+  </ol>
+</section>
+
+<!-- ==================== PROMPTS ==================== -->
+<section class="page" id="prompts" data-t="PROMPTS">
+  <h2>Caja de herramientas: todos los prompts</h2>
+  <p class="lead">Cada bloque es copiable tal cual. Los archivos completos están en la pestaña <strong>SKILL.md</strong>.</p>
+
+  <h3>1 · Plantilla vacía del Prompt Maestro de 7 Líneas</h3>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>1. FORMATO / ASPECT RATIO: [4:5 / 9:16 / 1:1 / 16:9]
+2. QUÉ ES: [cartel publicitario / afiche cultural / cartel de concierto / etc.]
+3. TEMA / COMPOSICIÓN: [elemento protagonista en primer plano] + [disposición del espacio negativo] + jerarquía visual.
+4. ESTILO: [técnica pictórica, movimiento artístico o formato comercial, con rigor técnico]
+5. TEXTO EXACTO: "[texto 1]", "[texto 2]", "[texto 3]" y ningún otro texto, sin letras inventadas, sin símbolos de relleno.
+6. TIPOGRAFÍA Y PALETA: [familia tipográfica], [2 o 3 colores].
+7. LÍNEA EVITA (Filtro Anti-IA Estricto): Evita banderines genéricos, guirnaldas de bombilla repetitivas, confetis de relleno, franjas de pincelada detrás del texto, destellos de luz, líneas de velocidad, rayos radiales decorativos, filetes horizontales finos, trazos de pincel sueltos, textura desgastada falsa, caras genéricas sonriendo en grupo, estética 3D inflada, neones saturados.</pre>
+  </div>
+
+  <h3>2 · Prompt compilado de ejemplo (Feria Medieval · Murcia)</h3>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>1. FORMATO / ASPECT RATIO: Vertical 4:5
+2. QUÉ ES: Cartel publicitario profesional para evento cultural.
+3. TEMA / COMPOSICIÓN: Un yelmo medieval en primer plano, composición limpia con espacio negativo y jerarquía visual.
+4. ESTILO: Estilo editorial contemporáneo con enfoque gráfico minimalista.
+5. TEXTO EXACTO: "Feria Medieval", "Murcia", "12-14 de Octubre" y ningún otro texto, sin letras inventadas, sin símbolos de relleno.
+6. TIPOGRAFÍA Y PALETA: Fuente brutalista de palo seco, gama cromática de colores cálidos (ocre, terracota, negro).
+7. LÍNEA EVITA (Filtro Anti-IA Estricto): Evita banderines genéricos, guirnaldas de bombilla repetitivas, confetis de relleno, franjas de pincelada detrás del texto, destellos de luz, líneas de velocidad, rayos radiales decorativos, filetes horizontales finos, trazos de pincel sueltos, textura desgastada falsa, caras genéricas sonriendo en grupo, estética 3D inflada, neones saturados.</pre>
+  </div>
+
+  <h3>3 · Prompt compilado de ejemplo (Jazz Night · Urban Park)</h3>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>1. FORMATO / ASPECT RATIO: Vertical 4:5
+2. QUÉ ES: Cartel publicitario profesional para festival de música.
+3. TEMA / COMPOSICIÓN: Un saxofón en primer plano, composición limpia con espacio negativo superior para el texto y jerarquía visual clara.
+4. ESTILO: Serigrafía vintage, tintas planas opacas, colores sólidos superpuestos y trama de puntos halftone visible.
+5. TEXTO EXACTO: "Jazz Night", "Urban Park", "22:00h" y ningún otro texto, sin letras inventadas, sin símbolos de relleno.
+6. TIPOGRAFÍA Y PALETA: Palo seco geométrica, grano de tinta auténtico sutil; paleta noche urbana (azul profundo, dorado, negro).
+7. LÍNEA EVITA (Filtro Anti-IA Estricto): Evita banderines genéricos, guirnaldas de bombilla repetitivas, confetis de relleno, franjas de pincelada detrás del texto, destellos de luz, líneas de velocidad, rayos radiales decorativos, filetes horizontales finos, trazos de pincel sueltos, textura desgastada falsa, caras genéricas sonriendo en grupo, estética 3D inflada, neones saturados.</pre>
+  </div>
+
+  <h3>4 · Prompt de bypass (modo avanzado de un solo paso)</h3>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>Campaña de moda, el título 'FORMA', subtítulo 'Nueva Colección', el formato 4:5. Quiero de protagonista en el cartel en primer plano una modelo con estilismo urbano. Estilo editorial de moda con influencia Bauhaus. Tipografía sans-serif condensada y la gama de colores quiero blanco, negro y rojo carmín.</pre>
+  </div>
+
+  <h3>5 · Prompt de iteración (cambio de estilo)</h3>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>Mantén intactos el formato, los textos exactos entre comillas, el elemento protagonista en primer plano, la tipografía, la paleta y la Línea EVITA. Cambia únicamente la Línea 4 (ESTILO) por: [nuevo estilo]. Genera la nueva versión del cartel.</pre>
+  </div>
+
+  <h3>6 · Prompt de iteración (corrección de composición)</h3>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>Mantén todo igual salvo la Línea 3. Reescríbela así: [elemento protagonista] en primer plano, composición asimétrica con espacio negativo [superior/inferior/lateral] para el texto, texto en capa superior totalmente visible sobre fondo despejado. Conserva la Línea EVITA completa.</pre>
+  </div>
+
+  <h3>7 · Línea EVITA (literal, para pegar al final de cualquier prompt)</h3>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>LÍNEA EVITA (Filtro Anti-IA Estricto): Evita banderines genéricos, guirnaldas de bombilla repetitivas, confetis de relleno, franjas de pincelada detrás del texto, destellos de luz, líneas de velocidad, rayos radiales decorativos, filetes horizontales finos, trazos de pincel sueltos, textura desgastada falsa, caras genéricas sonriendo en grupo, estética 3D inflada, neones saturados.</pre>
+  </div>
+
+  <h3>8 · Instrucción de activación de la skill</h3>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>@Diseñador de Carteles empezar</pre>
+  </div>
+
+  <h3>9 · Instrucción de activación en ChatGPT gratuito</h3>
+  <div class="cbox">
+    <button class="copy" data-copy>COPIAR</button>
+<pre>empezar</pre>
+  </div>
+
+  <div class="notice">
+    <strong>Los archivos completos.</strong> El contenido íntegro de <code>SKILL.md</code> y de <code>PROMPT-CHATGPT.md</code> está en la pestaña <strong>SKILL.md</strong>, con su propio botón de copiado para cada uno.
+  </div>
+</section>
+
+<!-- ==================== FUENTES ==================== -->
+<section class="page" id="fuentes" data-t="FUENTES">
+  <h2>Glosario y fuentes oficiales</h2>
+
+  <h3>Glosario técnico de diseño gráfico e IA</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Término</th><th>Definición</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Anti-Cliché</strong></td><td>Metodología de diseño orientada a eliminar los artefactos, patrones repetitivos y soluciones visuales perezosas características de la generación sintética.</td></tr>
+        <tr><td><strong>Aspect Ratio (relación de aspecto)</strong></td><td>Proporción entre el ancho y la altura de una imagen.</td></tr>
+        <tr><td><strong>Brutalismo</strong></td><td>Estilo de diseño que prioriza la honestidad de los materiales, la tipografía rotunda y las composiciones ásperas y de gran impacto.</td></tr>
+        <tr><td><strong>DALL·E 3</strong></td><td>Motor de generación de imágenes por IA desarrollado por OpenAI.</td></tr>
+        <tr><td><strong>Espacio negativo</strong></td><td>Área libre de elementos visuales o texto que rodea al sujeto principal.</td></tr>
+        <tr><td><strong>Halftone (trama de puntos)</strong></td><td>Técnica de impresión que simula tonos continuos mediante el uso de puntos de tamaño variable.</td></tr>
+        <tr><td><strong>Imagen 3</strong></td><td>Motor de generación de imágenes por IA desarrollado por Google.</td></tr>
+        <tr><td><strong>Línea EVITA</strong></td><td>Instrucción negativa o filtro de exclusión compuesto por restricciones estrictas para evitar clichés visuales.</td></tr>
+        <tr><td><strong>Prompt</strong></td><td>Instrucción o conjunto de texto introducido en un modelo de inteligencia artificial.</td></tr>
+        <tr><td><strong>Risografía</strong></td><td>Sistema de impresión duplicador analógico que utiliza tintas a base de soya y genera acabados con textura y pequeños desajustes.</td></tr>
+        <tr><td><strong>Serigrafía</strong></td><td>Técnica de impresión en la que se transfiere tinta a través de una malla tensada sobre un marco.</td></tr>
+        <tr><td><strong>Skill (habilidad)</strong></td><td>Archivo de configuración modular que extiende las capacidades de un modelo de lenguaje mediante instrucciones especializadas.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Fuentes fiables y documentación oficial</h3>
+
+  <div class="card">
+    <span class="tag">Fuente 1</span>
+    <h4>Canal oficial de YouTube «Joaquín Barberá — Inteligencia Artificial»</h4>
+    <p>Vídeo tutorial: <em>«NO Generes MÁS IMÁGENES ORDINARIAS con IA»</em>.</p>
+    <p class="small">URL de referencia:</p>
+    <div class="cbox">
+      <button class="copy" data-copy>COPIAR</button>
+<pre>https://youtube.com/watch?v=k6ShAIDijeA&amp;is=6q_c476p5byGg4R2</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="tag">Fuente 2</span>
+    <h4>Archivos de configuración del método Anti-IA</h4>
+    <ul>
+      <li><code>SKILL.md</code> — Documento oficial <em>Diseñador de Carteles Profesionales (Anti-IA)</em> para Gemini / ChatGPT Plus.</li>
+      <li><code>PROMPT-CHATGPT.md</code> — Documento oficial de instrucciones para ChatGPT Gratuito y chats de texto plano.</li>
+    </ul>
+    <p class="small">Ambos están reproducidos en la pestaña <strong>SKILL.md</strong> de este tutorial, con la advertencia de que su texto es una reconstrucción funcional basada en la estructura descrita por el material fuente.</p>
+  </div>
+
+  <div class="card">
+    <span class="tag">Fuente 3</span>
+    <h4>Plataforma de formación especializada</h4>
+    <p>Sitio web oficial: <code>formaia.com</code> — curso de especialización en Gemini Notebook y herramientas de IA.</p>
+  </div>
+
+  <div class="notice warn">
+    <strong>Nota sobre verificaciones.</strong> Las URLs se reproducen tal y como aparecen en el material fuente. No se ha comprobado su disponibilidad desde este archivo, que funciona sin conexión.
+  </div>
+</section>
+
+<!-- ==================== CRÉDITOS ==================== -->
+<section class="page" id="creditos" data-t="CRÉDITOS">
+  <h2>Créditos</h2>
+
+  <div class="hero" id="heroCreditos" role="img" aria-label="Ilustración animada: mesa de dirección de arte donde se compone un cartel profesional mientras un escudo bloquea los clichés de la IA."></div>
+
+  <p class="lead">Ilustración animada del método: un cartel en formato 4:5 se compone en el centro sobre una retícula, conectado por nodos de datos a los seis puntos de control del sistema. A la izquierda, un escudo —la Línea EVITA— rechaza banderines, destellos y barras de neón, que se desvanecen al acercarse. A la derecha, una caja tipográfica «Aa» y una paleta de tres muestras oscilan suavemente. Las partículas y los trazos discontinuos representan el flujo entre las siete líneas del prompt.</p>
+
+  <p class="author">Rubén Sbarsky</p>
+  <p style="font-size:1.1em;color:var(--muted);margin-top:-.3em">Autor del tutorial</p>
+
+  <div class="card">
+    <h3>Información adicional</h3>
+    <ul>
+      <li><strong>Metodología:</strong> Anti-Cliché, desarrollada por Rubén Sbarsky.</li>
+      <li><strong>Guía tutorial de referencia:</strong> Joaquín Barberá — Inteligencia Artificial.</li>
+      <li><strong>Formato:</strong> archivo HTML único, autónomo, sin dependencias externas ni conexión a Internet.</li>
+      <li><strong>Herramientas compatibles:</strong> Google Gemini (Skills) y ChatGPT (Plus y gratuito mediante archivo).</li>
+      <li><strong>Fecha y hora de creación:</strong> 25/10/2026 — 06:56:13</li>
+      <li><strong>Número de versión:</strong> V001</li>
+      <li><strong>Nombre del archivo:</strong> <code>tutorial_carteles_profesionales_IA_V001.html</code></li>
+    </ul>
+  </div>
+
+  <div class="notice">
+    <strong>Sobre las pruebas.</strong> Este archivo se ha construido y revisado mediante inspección estática del código (estructura HTML, sintaxis JavaScript, reglas CSS, coherencia de identificadores y contenido). No se ha ejecutado en un navegador real durante su generación, por lo que el comportamiento concreto de la impresión, del portapapeles o del almacenamiento local depende del navegador en el que se abra. La animación SVG utiliza SMIL y CSS estándar, sin bibliotecas externas.
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Referencias ---------- */
+  var secs   = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var tabs   = Array.prototype.slice.call(document.querySelectorAll('.chip[data-tab]'));
+  var dr     = document.getElementById('dr');
+  var drl    = document.getElementById('drl');
+  var drb    = document.getElementById('drb');
+  var mb     = document.getElementById('mb');
+  var ix     = document.getElementById('ix');
+  var prog   = document.getElementById('prog');
+  var topBtn = document.getElementById('top');
+  var chipsBox = document.getElementById('chips');
+
+  /* ---------- Plantilla única del SVG animado ---------- */
+  function heroSVG(p){
+    var cx = 450, cy = 300;
+
+    /* Retícula de fondo */
+    var grid = '';
+    for(var x = 60; x < 900; x += 60){ grid += '<line x1="'+x+'" y1="0" x2="'+x+'" y2="620"/>'; }
+    for(var y = 60; y < 620; y += 60){ grid += '<line x1="0" y1="'+y+'" x2="900" y2="'+y+'"/>'; }
+
+    /* Partículas */
+    var dust = '';
+    for(var i = 0; i < 24; i++){
+      var X = (i * 151) % 870 + 15;
+      var Y = (i * 233) % 590 + 15;
+      var R = 1 + ((i * 5) % 3);
+      var dur = (3.5 + ((i * 11) % 30) / 10).toFixed(1);
+      var beg = (((i * 19) % 40) / 10).toFixed(1);
+      var col = (i % 3 === 0) ? '#38bdf8' : (i % 3 === 1 ? '#a855f7' : '#f59e0b');
+      dust += '<circle cx="'+X+'" cy="'+Y+'" r="'+R+'" fill="'+col+'" opacity="0.5">'
+            +   '<animate attributeName="cy" values="'+Y+';'+(Y-18)+';'+Y+'" dur="'+dur+'s" begin="'+beg+'s" repeatCount="indefinite"/>'
+            +   '<animate attributeName="opacity" values="0.1;0.85;0.1" dur="'+dur+'s" begin="'+beg+'s" repeatCount="indefinite"/>'
+            + '</circle>';
+    }
+
+    /* Nodos y conexiones */
+    var nodes = [[90,110],[810,110],[90,510],[810,510],[450,55],[450,570]];
+    var net = '';
+    nodes.forEach(function(n, i){
+      net += '<line x1="'+n[0]+'" y1="'+n[1]+'" x2="'+cx+'" y2="'+cy+'" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="7 9" opacity="0.35">'
+           +   '<animate attributeName="stroke-dashoffset" from="0" to="-32" dur="'+(1.4 + i*0.12).toFixed(2)+'s" repeatCount="indefinite"/>'
+           + '</line>';
+    });
+    nodes.forEach(function(n, i){
+      net += '<circle cx="'+n[0]+'" cy="'+n[1]+'" r="8" fill="#0a0e1a" stroke="#38bdf8" stroke-width="2">'
+           +   '<animate attributeName="r" values="6;10;6" dur="'+(2.4 + i*0.25).toFixed(1)+'s" repeatCount="indefinite"/>'
+           + '</circle>'
+           + '<circle cx="'+n[0]+'" cy="'+n[1]+'" r="3.2" fill="#38bdf8"/>';
+    });
+
+    var svg = ''
+    + '<svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ttl-'+p+' dsc-'+p+'" preserveAspectRatio="xMidYMid meet">'
+    + '<title id="ttl-'+p+'">Mesa de dirección de arte: un cartel se compone sobre una retícula mientras un escudo bloquea los clichés de la IA.</title>'
+    + '<desc id="dsc-'+p+'">Ilustración animada del método Anti-Cliché: nodos de datos conectados a un cartel 4:5 en construcción, muestras de color, tipografía y un filtro que rechaza banderines, destellos y neones.</desc>'
+    + '<defs>'
+    +   '<radialGradient id="bg-'+p+'" cx="50%" cy="45%" r="72%">'
+    +     '<stop offset="0%" stop-color="#12203a"/><stop offset="100%" stop-color="#070b14"/>'
+    +   '</radialGradient>'
+    +   '<linearGradient id="warm-'+p+'" x1="0" y1="0" x2="1" y2="1">'
+    +     '<stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#ef4444"/>'
+    +   '</linearGradient>'
+    +   '<linearGradient id="cool-'+p+'" x1="0" y1="0" x2="1" y2="1">'
+    +     '<stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#a855f7"/>'
+    +   '</linearGradient>'
+    +   '<filter id="glow-'+p+'" x="-60%" y="-60%" width="220%" height="220%">'
+    +     '<feGaussianBlur stdDeviation="7" result="b"/>'
+    +     '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>'
+    +   '</filter>'
+    + '</defs>'
+
+    + '<rect width="900" height="620" fill="url(#bg-'+p+')"/>'
+
+    + '<g stroke="#1e3a5f" stroke-width="1" opacity="0.55">'+grid
+    +   '<animate attributeName="opacity" values="0.25;0.6;0.25" dur="9s" repeatCount="indefinite"/>'
+    + '</g>'
+
+    + dust
+    + net
+
+    /* ---- Cartel central 4:5 ---- */
+    + '<g>'
+    +   '<animateTransform attributeName="transform" type="translate" values="0 0;0 -10;0 0" dur="6s" repeatCount="indefinite"/>'
+    +   '<rect x="352" y="177" width="200" height="250" rx="9" fill="#0a0e1a" opacity="0.55"/>'
+    +   '<rect x="350" y="175" width="200" height="250" rx="9" fill="#f1f5f9" stroke="#1e3a5f" stroke-width="2"/>'
+
+    /* Marcas de corte */
+    +   '<path d="M340 175 h-8 M350 165 v-8 M560 175 h8 M550 165 v-8 M340 425 h-8 M350 435 v8 M560 425 h8 M550 435 v8" stroke="#38bdf8" stroke-width="1.5" opacity="0.7"/>'
+
+    /* Barra superior */
+    +   '<rect x="368" y="196" width="62" height="6" rx="3" fill="#0f172a" opacity="0.75"/>'
+
+    /* Protagonista: círculo + triángulo rotatorio */
+    +   '<circle cx="450" cy="258" r="46" fill="url(#warm-'+p+')">'
+    +     '<animate attributeName="r" values="44;48;44" dur="4.5s" repeatCount="indefinite"/>'
+    +   '</circle>'
+    +   '<path d="M450 228 L476 282 L424 282 Z" fill="#0a0e1a" opacity="0.55">'
+    +     '<animateTransform attributeName="transform" type="rotate" from="0 450 258" to="360 450 258" dur="20s" repeatCount="indefinite"/>'
+    +   '</path>'
+
+    /* Titulares que se escriben */
+    +   '<rect x="368" y="340" height="14" rx="3" fill="#0f172a">'
+    +     '<animate attributeName="width" values="0;150;150" dur="4s" begin="0.2s" repeatCount="indefinite" keyTimes="0;0.35;1"/>'
+    +   '</rect>'
+    +   '<rect x="368" y="362" height="14" rx="3" fill="#0f172a" opacity="0.82">'
+    +     '<animate attributeName="width" values="0;112;112" dur="4s" begin="0.7s" repeatCount="indefinite" keyTimes="0;0.35;1"/>'
+    +   '</rect>'
+    +   '<rect x="368" y="384" height="14" rx="3" fill="#0f172a" opacity="0.62">'
+    +     '<animate attributeName="width" values="0;134;134" dur="4s" begin="1.2s" repeatCount="indefinite" keyTimes="0;0.35;1"/>'
+    +   '</rect>'
+
+    /* Paleta del cartel */
+    +   '<circle cx="380" cy="408" r="6" fill="#f59e0b"><animate attributeName="opacity" values="1;.4;1" dur="3s" repeatCount="indefinite"/></circle>'
+    +   '<circle cx="402" cy="408" r="6" fill="#ef4444"><animate attributeName="opacity" values="1;.4;1" dur="3s" begin=".4s" repeatCount="indefinite"/></circle>'
+    +   '<circle cx="424" cy="408" r="6" fill="#0f172a"><animate attributeName="opacity" values="1;.4;1" dur="3s" begin=".8s" repeatCount="indefinite"/></circle>'
+
+    /* Línea de escaneo */
+    +   '<rect x="350" y="175" width="200" height="3" fill="#38bdf8" opacity="0.55">'
+    +     '<animate attributeName="y" values="175;420;175" dur="5s" repeatCount="indefinite"/>'
+    +     '<animate attributeName="opacity" values="0;0.8;0" dur="5s" repeatCount="indefinite"/>'
+    +   '</rect>'
+    + '</g>'
+
+    /* ---- Escudo EVITA ---- */
+    + '<g filter="url(#glow-'+p+')">'
+    +   '<path d="M150 240 L200 258 L200 302 C200 336 150 356 150 356 C150 356 100 336 100 302 L100 258 Z" fill="rgba(56,189,248,0.10)" stroke="#38bdf8" stroke-width="2.5"/>'
+    +   '<path d="M124 300 L143 319 L177 282" fill="none" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">'
+    +     '<animate attributeName="opacity" values="0.55;1;0.55" dur="2.6s" repeatCount="indefinite"/>'
+    +   '</path>'
+    + '</g>'
+
+    /* Clichés rechazados */
+    + '<g opacity="0.9">'
+    +   '<animateTransform attributeName="transform" type="translate" values="0 0;20 0;0 0" dur="3.6s" repeatCount="indefinite"/>'
+    +   '<animate attributeName="opacity" values="0.9;0;0.9" dur="3.6s" repeatCount="indefinite"/>'
+    +   '<path d="M228 250 L272 250" stroke="#ef4444" stroke-width="2"/>'
+    +   '<path d="M232 250 L242 263 L252 250 Z" fill="#ef4444"/>'
+    +   '<path d="M248 250 L258 263 L268 250 Z" fill="#f59e0b"/>'
+    + '</g>'
+    + '<g opacity="0.9">'
+    +   '<animateTransform attributeName="transform" type="translate" values="0 0;22 0;0 0" dur="4.2s" begin="0.8s" repeatCount="indefinite"/>'
+    +   '<animate attributeName="opacity" values="0.9;0;0.9" dur="4.2s" begin="0.8s" repeatCount="indefinite"/>'
+    +   '<path d="M250 300 L254 310 L264 314 L254 318 L250 328 L246 318 L236 314 L246 310 Z" fill="#a855f7"/>'
+    + '</g>'
+    + '<g opacity="0.9">'
+    +   '<animateTransform attributeName="transform" type="translate" values="0 0;18 0;0 0" dur="3.9s" begin="1.6s" repeatCount="indefinite"/>'
+    +   '<animate attributeName="opacity" values="0.9;0;0.9" dur="3.9s" begin="1.6s" repeatCount="indefinite"/>'
+    +   '<rect x="230" y="352" width="44" height="9" rx="4.5" fill="#22d3ee"/>'
+    + '</g>'
+
+    /* ---- Caja tipográfica Aa ---- */
+    + '<g>'
+    +   '<animateTransform attributeName="transform" type="rotate" values="-4 750 250;4 750 250;-4 750 250" dur="7s" repeatCount="indefinite"/>'
+    +   '<rect x="712" y="212" width="76" height="76" rx="16" fill="none" stroke="#a855f7" stroke-width="2" opacity="0.85"/>'
+    +   '<text x="750" y="265" text-anchor="middle" font-family="Georgia,serif" font-size="40" font-weight="700" fill="#a855f7">Aa</text>'
+    + '</g>'
+
+    /* ---- Muestras de color ---- */
+    + '<g>'
+    +   '<rect x="716" y="330" width="68" height="16" rx="8" fill="#f59e0b"><animate attributeName="opacity" values="1;.45;1" dur="3.2s" repeatCount="indefinite"/></rect>'
+    +   '<rect x="716" y="352" width="68" height="16" rx="8" fill="#ef4444"><animate attributeName="opacity" values="1;.45;1" dur="3.2s" begin=".4s" repeatCount="indefinite"/></rect>'
+    +   '<rect x="716" y="374" width="68" height="16" rx="8" fill="#38bdf8"><animate attributeName="opacity" values="1;.45;1" dur="3.2s" begin=".8s" repeatCount="indefinite"/></rect>'
+    + '</g>'
+
+    /* ---- Arco cromático ---- */
+    + '<g transform="translate(450,300)" opacity="0.35">'
+    +   '<circle r="250" fill="none" stroke="url(#cool-'+p+')" stroke-width="1.5" stroke-dasharray="2 14">'
+    +     '<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="40s" repeatCount="indefinite"/>'
+    +   '</circle>'
+    + '</g>'
+
+    + '</svg>';
+
+    return svg;
+  }
+
+  var heroSeq = 0;
+  function mountHero(el){
+    if(!el) return;
+    heroSeq++;
+    el.innerHTML = heroSVG('h' + heroSeq);
+    try{
+      if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        var s = el.querySelector('svg');
+        if(s && typeof s.pauseAnimations === 'function'){ s.pauseAnimations(); }
+      }
+    }catch(e){}
+  }
+
+  /* ---------- Panel lateral ---------- */
+  function tg(v){
+    var open = (typeof v === 'boolean') ? v : !dr.classList.contains('o');
+    dr.classList.toggle('o', open);
+    drb.classList.toggle('o', open);
+    mb.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  var cur = 0;
+
+  function go(i){
+    if(i < 0) i = 0;
+    if(i > secs.length - 1) i = secs.length - 1;
+    cur = i;
+
+    secs.forEach(function(s, j){ s.classList.toggle('on', j === i); });
+    tabs.forEach(function(t, j){ t.classList.toggle('on', j === i); });
+
+    var links = drl.querySelectorAll('a[data-i]');
+    Array.prototype.forEach.call(links, function(a){
+      a.classList.toggle('on', parseInt(a.getAttribute('data-i'), 10) === i);
+    });
+
+    window.scrollTo(0, 0);
+
+    try{ history.replaceState(null, '', '#' + secs[i].id); }catch(e){}
+
+    var id = secs[i].id;
+    if(id === 'inicio'){ mountHero(document.getElementById('heroInicio')); }
+    if(id === 'creditos'){ mountHero(document.getElementById('heroCreditos')); }
+
+    /* Mantener visible el chip activo sin desplazar la página */
+    var c = tabs[i];
+    if(c && chipsBox){
+      var cl = chipsBox.scrollLeft, cw = chipsBox.clientWidth;
+      if(c.offsetLeft < cl || c.offsetLeft + c.offsetWidth > cl + cw){
+        chipsBox.scrollTo({ left: Math.max(0, c.offsetLeft - 60), behavior: 'smooth' });
+      }
+    }
+
+    updateProgress();
+  }
+
+  /* ---------- Construcción del índice ---------- */
+  secs.forEach(function(s, i){
+    var a = document.createElement('a');
+    a.setAttribute('data-i', i);
+    a.setAttribute('role', 'button');
+    a.setAttribute('tabindex', '0');
+    var titulo = s.getAttribute('data-t');
+    if(!titulo){
+      var h2 = s.querySelector('h2');
+      titulo = h2 ? h2.textContent : s.id;
+    }
+    a.textContent = (i ? i + '. ' : '') + titulo;
+    a.addEventListener('click', function(){ go(i); tg(false); });
+    a.addEventListener('keydown', function(ev){
+      if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); go(i); tg(false); }
+    });
+    drl.appendChild(a);
+  });
+
+  /* ---------- Chips de navegación ---------- */
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ go(i); });
+  });
+
+  /* ---------- Botones del índice ---------- */
+  mb.addEventListener('click', function(){ tg(); });
+  if(ix){ ix.addEventListener('click', function(){ tg(true); }); }
+
+  /* ---------- Cierre del panel ---------- */
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && dr.classList.contains('o')){ tg(false); mb.focus(); }
+  });
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('#dr, #mb, #ix')) tg(false);
+  });
+  drb.addEventListener('click', function(){ tg(false); });
+
+  /* ---------- Buscador ---------- */
+  var q  = document.getElementById('q');
+  var qr = document.getElementById('qr');
+
+  q.addEventListener('input', function(){
+    var val = q.value.trim().toLowerCase();
+    qr.innerHTML = '';
+    if(val.length < 2){ qr.hidden = true; return; }
+
+    var found = 0;
+    secs.forEach(function(s, i){
+      var texto = (s.textContent || '').toLowerCase();
+      if(texto.indexOf(val) !== -1){
+        var titulo = s.getAttribute('data-t') || (s.querySelector('h2') ? s.querySelector('h2').textContent : s.id);
+        var a = document.createElement('a');
+        a.setAttribute('role', 'button');
+        a.setAttribute('tabindex', '0');
+        a.textContent = titulo;
+        var accion = function(){ go(i); q.value = ''; qr.hidden = true; tg(false); };
+        a.addEventListener('click', accion);
+        a.addEventListener('keydown', function(ev){
+          if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); accion(); }
+        });
+        qr.appendChild(a);
+        found++;
+      }
+    });
+    qr.hidden = (found === 0);
+  });
+
+  /* ---------- Barra de progreso ---------- */
+  function updateProgress(){
+    var st = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var h  = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = h > 0 ? Math.min(100, (st / h) * 100) : 0;
+    prog.style.width = pct + '%';
+    if(st > 400){ topBtn.classList.add('show'); } else { topBtn.classList.remove('show'); }
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  topBtn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+  /* ---------- Tamaño de letra ---------- */
+  function applyFS(v){
+    v = Math.max(0.8, Math.min(1.45, v));
+    document.documentElement.style.setProperty('--fs', v);
+    try{ localStorage.setItem('tut_carteles_fs', String(v)); }catch(e){}
+  }
+  var fs = 1;
+  try{ var savedFs = parseFloat(localStorage.getItem('tut_carteles_fs')); if(!isNaN(savedFs)) fs = savedFs; }catch(e){}
+  applyFS(fs);
+
+  document.getElementById('fsm').addEventListener('click', function(){ fs = Math.max(0.8, fs - 0.08); applyFS(fs); });
+  document.getElementById('fsp').addEventListener('click', function(){ fs = Math.min(1.45, fs + 0.08); applyFS(fs); });
+
+  /* ---------- Tema ---------- */
+  var thm = document.getElementById('thm');
+  function applyTheme(light){
+    document.documentElement.classList.toggle('light', light);
+    thm.textContent = light ? '☀' : '🌙';
+    thm.setAttribute('aria-label', light ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro');
+    try{ localStorage.setItem('tut_carteles_theme', light ? 'light' : 'dark'); }catch(e){}
+  }
+  var savedTheme = null;
+  try{ savedTheme = localStorage.getItem('tut_carteles_theme'); }catch(e){}
+  applyTheme(savedTheme === 'light');
+
+  thm.addEventListener('click', function(){
+    applyTheme(!document.documentElement.classList.contains('light'));
+  });
+
+  /* ---------- Impresión ---------- */
+  function preparePrint(){
+    document.querySelectorAll('.hero').forEach(function(el){
+      if(!el.children.length) mountHero(el);
+    });
+    document.querySelectorAll('details').forEach(function(d){
+      d.setAttribute('data-wasopen', d.open ? '1' : '0');
+      d.open = true;
+    });
+  }
+  function restorePrint(){
+    document.querySelectorAll('details').forEach(function(d){
+      if(d.getAttribute('data-wasopen') === '0'){ d.open = false; }
+      d.removeAttribute('data-wasopen');
+    });
+    document.querySelectorAll('.hero svg').forEach(function(s){
+      try{ if(typeof s.unpauseAnimations === 'function') s.unpauseAnimations(); }catch(e){}
+    });
+  }
+
+  window.addEventListener('beforeprint', preparePrint);
+  window.addEventListener('afterprint', restorePrint);
+
+  document.getElementById('prt').addEventListener('click', function(){
+    try{
+      preparePrint();
+      window.print();
+    }catch(err){
+      alert('No se ha podido abrir el diálogo de impresión.\n\nAbre este archivo directamente en el navegador y utiliza Ctrl+P o Cmd+P.');
+    }
+  });
+
+  /* ---------- Botones COPIAR ---------- */
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.copy');
+    if(!btn) return;
+
+    var box = btn.parentNode;
+    var pre = box ? box.querySelector('pre') : null;
+    if(!pre) return;
+
+    var txt = pre.textContent;
+    var original = btn.textContent;
+
+    function ok(){
+      btn.textContent = '✓ COPIADO';
+      btn.classList.add('done');
+      setTimeout(function(){ btn.textContent = original; btn.classList.remove('done'); }, 1600);
+    }
+
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = txt;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      var done = false;
+      try{ done = document.execCommand('copy'); }catch(err){ done = false; }
+      document.body.removeChild(ta);
+      if(done){ ok(); }
+      else{ alert('No se ha podido copiar automáticamente.\n\nSelecciona el texto del bloque y cópialo con Ctrl+C o Cmd+C.'); }
+    }
+
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(ok).catch(fallback);
+    }else{
+      fallback();
+    }
+  });
+
+  /* ---------- Listas de comprobación persistentes ---------- */
+  var checks = document.querySelectorAll('input[type="checkbox"][data-k]');
+  Array.prototype.forEach.call(checks, function(chk){
+    var key = 'tut_carteles_' + chk.getAttribute('data-k');
+    try{
+      if(localStorage.getItem(key) === '1'){ chk.checked = true; }
+    }catch(e){}
+    chk.addEventListener('change', function(){
+      try{ localStorage.setItem(key, chk.checked ? '1' : '0'); }catch(e){}
+    });
+  });
+
+  /* ---------- Reparación periódica de SVG vacíos ---------- */
+  setInterval(function(){
+    document.querySelectorAll('.hero').forEach(function(el){
+      var visible = (el.offsetParent !== null) || (el.getClientRects().length > 0);
+      if(visible && el.children.length === 0){ mountHero(el); }
+    });
+  }, 1500);
+
+  /* ---------- Arranque ---------- */
+  mountHero(document.getElementById('heroInicio'));
+
+  var startId = (location.hash || '').replace('#', '');
+  var startIndex = 0;
+  if(startId){
+    for(var k = 0; k < secs.length; k++){
+      if(secs[k].id === startId){ startIndex = k; break; }
+    }
+  }
+  go(startIndex);
+  updateProgress();
+
+})();
+</script>
+</body>
+</html>
